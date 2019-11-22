@@ -1,9 +1,9 @@
 server:
   port: 8080
   servlet:
-    context-path: /Codersite
+    context-path: /CoderSite
 
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/mytest
+      uri: mongodb://localhost:27017/codersite
