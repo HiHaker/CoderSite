@@ -27,7 +27,6 @@ class CodersiteApplicationTests {
         u.setAvatarId("");
         u.setDescription("系统创建人");
         u.setMailbox("1434938035@qq.com");
-        u.setLastLoginTime("2019-11-22");
         List<String> labels = new ArrayList<>();
         labels.add("男性");
         u.setLabels(labels);

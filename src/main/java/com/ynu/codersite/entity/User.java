@@ -27,7 +27,7 @@ public class User {
     // 邮箱
     private String mailbox;
     // 上次登录时间
-    private String lastLoginTime;
+//    private String lastLoginTime;
     // 用户的标签
     private List<String> labels;
     // 用户的关注
@@ -39,8 +39,7 @@ public class User {
 
     public User(String userId, String nickname, String password, String birthday,
                 boolean sex, String registerDate, String avatarId,
-                String description, String mailbox, String lastLoginTime,
-                List<String> labels, List<String> follows) {
+                String description, String mailbox, List<String> labels, List<String> follows) {
         this.userId = userId;
         this.nickname = nickname;
         this.password = password;
@@ -50,7 +49,6 @@ public class User {
         this.avatarId = avatarId;
         this.description = description;
         this.mailbox = mailbox;
-        this.lastLoginTime = lastLoginTime;
         this.labels = labels;
         this.follows = follows;
     }
@@ -127,14 +125,6 @@ public class User {
         this.mailbox = mailbox;
     }
 
-    public String getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(String lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
     public List<String> getLabels() {
         return labels;
     }
@@ -163,7 +153,6 @@ public class User {
                 ", avatarId='" + avatarId + '\'' +
                 ", description='" + description + '\'' +
                 ", mailbox='" + mailbox + '\'' +
-                ", lastLoginTime='" + lastLoginTime + '\'' +
                 ", labels=" + labels +
                 ", follows=" + follows +
                 '}';

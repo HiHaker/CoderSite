@@ -23,11 +23,27 @@ public class UserService {
     }
 
     /**
+     * 删除一个用户
+     * @param userId
+     */
+    public void deleteUserById(String userId){
+        userRepository.deleteUserByUserId(userId);
+    }
+
+    /**
+     * 更新用户信息
+     * @param user
+     */
+    public void updateUser(User user){
+        userRepository.save(user);
+    }
+
+    /**
      * 根据用户的id查询用户
-     * @param userID
+     * @param userId
      * @return
      */
-    public User getUserById(String userID){
-        return userRepository.findUserByUserId(userID);
+    public User getUserById(String userId){
+        return userRepository.findUserByUserId(userId);
     }
 }
