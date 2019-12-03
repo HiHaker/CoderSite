@@ -1,7 +1,7 @@
-package com.ynu.codersite.service;
+package com.ynu.codersite.service.mongoservice;
 
-import com.ynu.codersite.entity.PostMessage;
-import com.ynu.codersite.repository.PostMessageRepository;
+import com.ynu.codersite.entity.mogoentity.PostMessage;
+import com.ynu.codersite.repository.mongorepository.PostMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

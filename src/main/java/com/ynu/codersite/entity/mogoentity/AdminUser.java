@@ -1,4 +1,4 @@
-package com.ynu.codersite.entity;
+package com.ynu.codersite.entity.mogoentity;
 
 /**
  * Created on 2019/11/22 0022

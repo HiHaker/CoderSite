@@ -7,3 +7,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/codersite
+
+# 配置elasticsearch参数
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
+  protocol: http

@@ -1,6 +1,6 @@
-package com.ynu.codersite.repository;
+package com.ynu.codersite.repository.mongorepository;
 
-import com.ynu.codersite.entity.User;
+import com.ynu.codersite.entity.mogoentity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.ynu.codersite.service;
+package com.ynu.codersite.service.mongoservice;
 
-import com.ynu.codersite.entity.User;
-import com.ynu.codersite.repository.UserRepository;
+import com.ynu.codersite.entity.mogoentity.User;
+import com.ynu.codersite.repository.mongorepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

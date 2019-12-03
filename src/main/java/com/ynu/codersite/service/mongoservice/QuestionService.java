@@ -1,7 +1,7 @@
-package com.ynu.codersite.service;
+package com.ynu.codersite.service.mongoservice;
 
-import com.ynu.codersite.entity.Question;
-import com.ynu.codersite.repository.QuestionRepository;
+import com.ynu.codersite.entity.mogoentity.Question;
+import com.ynu.codersite.repository.mongorepository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.ynu.codersite.entity;
+package com.ynu.codersite.entity.mogoentity;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import java.util.List;
  * BY Jianlong
  */
 public class PostMessage {
-
     private class rNode{
         private String userId;
         private String time;

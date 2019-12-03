@@ -1,4 +1,4 @@
-package com.ynu.codersite.entity;
+package com.ynu.codersite.entity.mogoentity;
 
 import java.util.List;
 

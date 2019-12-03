@@ -1,8 +1,8 @@
 package com.ynu.codersite.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ynu.codersite.entity.AdminUser;
-import com.ynu.codersite.service.AdminUserService;
+import com.ynu.codersite.entity.mogoentity.AdminUser;
+import com.ynu.codersite.service.mongoservice.AdminUserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

@@ -1,6 +1,6 @@
-package com.ynu.codersite.repository;
+package com.ynu.codersite.repository.mongorepository;
 
-import com.ynu.codersite.entity.PostMessage;
+import com.ynu.codersite.entity.mogoentity.PostMessage;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
