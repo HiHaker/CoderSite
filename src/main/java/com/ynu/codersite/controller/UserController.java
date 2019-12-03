@@ -34,10 +34,11 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "账号密码", required = true),
             @ApiImplicitParam(name = "birthday", value = "生日"),
             @ApiImplicitParam(name = "sex", value = "性别"),
-            @ApiImplicitParam(name = "avatarId", value = "头像id"),
-            @ApiImplicitParam(name = "description", value = "个人简介"),
             @ApiImplicitParam(name = "registerDate", value = "注册日期", required = true),
+            @ApiImplicitParam(name = "avatarId", value = "头像id"),
+            @ApiImplicitParam(name = "signature", value = "个性签名"),
             @ApiImplicitParam(name = "mailbox", value = "邮箱"),
+            @ApiImplicitParam(name = "coverPicture", value = "背景图像", required = true),
             @ApiImplicitParam(name = "labels", value = "用户标签", dataType = "String", allowMultiple = true),
             @ApiImplicitParam(name = "follows", value = "我的关注", dataType = "String", allowMultiple = true)
     })

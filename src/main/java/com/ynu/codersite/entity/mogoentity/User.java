@@ -22,10 +22,12 @@ public class User {
     private String registerDate;
     // 头像Id
     private String avatarId;
-    // 个人简介
-    private String description;
+    // 个性签名
+    private String signature;
     // 邮箱
     private String mailbox;
+    // 背景图片
+    private String coverPicture;
     // 上次登录时间
 //    private String lastLoginTime;
     // 用户的标签
@@ -37,9 +39,10 @@ public class User {
 
     }
 
-    public User(String userId, String nickname, String password, String birthday,
-                boolean sex, String registerDate, String avatarId,
-                String description, String mailbox, List<String> labels, List<String> follows) {
+    public User(String userId, String nickname, String password,
+                String birthday, boolean sex, String registerDate,
+                String avatarId, String signature, String mailbox,
+                String coverPicture, List<String> labels, List<String> follows) {
         this.userId = userId;
         this.nickname = nickname;
         this.password = password;
@@ -47,8 +50,9 @@ public class User {
         this.sex = sex;
         this.registerDate = registerDate;
         this.avatarId = avatarId;
-        this.description = description;
+        this.signature = signature;
         this.mailbox = mailbox;
+        this.coverPicture = coverPicture;
         this.labels = labels;
         this.follows = follows;
     }
@@ -109,20 +113,28 @@ public class User {
         this.avatarId = avatarId;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getMailbox() {
         return mailbox;
     }
 
     public void setMailbox(String mailbox) {
         this.mailbox = mailbox;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String getCoverPicture() {
+        return coverPicture;
+    }
+
+    public void setCoverPicture(String coverPicture) {
+        this.coverPicture = coverPicture;
     }
 
     public List<String> getLabels() {
@@ -151,8 +163,9 @@ public class User {
                 ", sex=" + sex +
                 ", registerDate='" + registerDate + '\'' +
                 ", avatarId='" + avatarId + '\'' +
-                ", description='" + description + '\'' +
+                ", signature='" + signature + '\'' +
                 ", mailbox='" + mailbox + '\'' +
+                ", coverPicture='" + coverPicture + '\'' +
                 ", labels=" + labels +
                 ", follows=" + follows +
                 '}';
