@@ -1,5 +1,7 @@
 package com.ynu.codersite.entity.esentity;
 
+import com.ynu.codersite.entity.CommentNode;
+import com.ynu.codersite.entity.ContentNode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -11,83 +13,21 @@ import java.util.List;
  * Created on 2019/12/3 0003
  * BY Jianlong
  */
-@Document(indexName = "codersite", type = "postMessageText", shards = 1, replicas = 0)
+@Document(indexName = "postmessagetext", type = "postMessageText", shards = 1, replicas = 0)
 public class PostMessageText {
-    private class ContentNode{
-        String para;
-        String image;
-
-        public ContentNode() {
-        }
-
-        public ContentNode(String para, String image) {
-            this.para = para;
-            this.image = image;
-        }
-
-        public String getPara() {
-            return para;
-        }
-
-        public void setPara(String para) {
-            this.para = para;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-    }
-
-    private class CommentNode{
-        String userId;
-        String content;
-        String time;
-
-        public CommentNode() {
-        }
-
-        public CommentNode(String userId, String content, String time) {
-            this.userId = userId;
-            this.content = content;
-            this.time = time;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-    }
-
     @Id
     private String pId;
+    // 帖子的标题
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title;
+    // 帖子的标签
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    private List<String> labels;
+    // 帖子的内容
+   @Field(type = FieldType.Nested, analyzer = "ik_max_word")
     private List<ContentNode> content;
-    @Field(type = FieldType.Text, analyzer = "ik_max_word")
+   // 帖子的评论
+    @Field(type = FieldType.Nested, analyzer = "ik_max_word")
     private List<CommentNode> comments;
 
     public String getpId() {
@@ -104,6 +44,14 @@ public class PostMessageText {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 
     public List<ContentNode> getContent() {
@@ -127,6 +75,7 @@ public class PostMessageText {
         return "PostMessageText{" +
                 "pId='" + pId + '\'' +
                 ", title='" + title + '\'' +
+                ", labels=" + labels +
                 ", content=" + content +
                 ", comments=" + comments +
                 '}';

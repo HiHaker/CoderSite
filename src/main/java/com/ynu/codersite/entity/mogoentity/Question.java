@@ -1,5 +1,7 @@
 package com.ynu.codersite.entity.mogoentity;
 
+import com.ynu.codersite.entity.RelationNode;
+
 import java.util.List;
 
 /**
@@ -8,63 +10,29 @@ import java.util.List;
  */
 public class Question {
 
-    private class rNode{
-        private String userId;
-        private String time;
-
-        public rNode(){
-
-        }
-
-        public rNode(String userId, String time) {
-            this.userId = userId;
-            this.time = time;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-    }
-
     // 问题的id 添加唯一索引
     private String qId;
     // 用户ID
     private String userId;
     // 发表时间
     private String postTime;
-    // 问题的标签
-    private List<String> labels;
     // 问题的图片
     private List<String> images;
     // 用户点赞
-    private List<rNode> likes;
+    private List<RelationNode> likes;
     // 用户收藏
-    private List<rNode> favorites;
+    private List<RelationNode> favorites;
 
     public Question(){
 
     }
 
     public Question(String qId, String userId,
-                    String postTime, List<String> labels,
-                    List<String> images, List<rNode> likes,
-                    List<rNode> favorites) {
+                    String postTime, List<String> images,
+                    List<RelationNode> likes, List<RelationNode> favorites) {
         this.qId = qId;
         this.userId = userId;
         this.postTime = postTime;
-        this.labels = labels;
         this.images = images;
         this.likes = likes;
         this.favorites = favorites;
@@ -94,14 +62,6 @@ public class Question {
         this.postTime = postTime;
     }
 
-    public List<String> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<String> labels) {
-        this.labels = labels;
-    }
-
     public List<String> getImages() {
         return images;
     }
@@ -110,19 +70,19 @@ public class Question {
         this.images = images;
     }
 
-    public List<rNode> getLikes() {
+    public List<RelationNode> getLikes() {
         return likes;
     }
 
-    public void setLikes(List<rNode> likes) {
+    public void setLikes(List<RelationNode> likes) {
         this.likes = likes;
     }
 
-    public List<rNode> getFavorites() {
+    public List<RelationNode> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(List<rNode> favorites) {
+    public void setFavorites(List<RelationNode> favorites) {
         this.favorites = favorites;
     }
 
@@ -132,7 +92,6 @@ public class Question {
                 "qId='" + qId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", postTime='" + postTime + '\'' +
-                ", labels=" + labels +
                 ", images=" + images +
                 ", likes=" + likes +
                 ", favorites=" + favorites +

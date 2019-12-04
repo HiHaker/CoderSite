@@ -1,8 +1,15 @@
 package com.ynu.codersite;
 
+import com.ynu.codersite.entity.CommentNode;
+import com.ynu.codersite.entity.ContentNode;
+import com.ynu.codersite.entity.esentity.PostMessageText;
 import com.ynu.codersite.entity.esentity.QuestionText;
+import com.ynu.codersite.entity.esentity.UserInfo;
+import com.ynu.codersite.repository.esrepoitory.PostMessageTextRepository;
 import com.ynu.codersite.repository.esrepoitory.QuestionTextRepository;
+import com.ynu.codersite.repository.esrepoitory.UserInfoRepository;
 import com.ynu.codersite.service.esservice.QuestionTextService;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -17,6 +24,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class CodersiteApplicationTests {
@@ -27,13 +36,17 @@ class CodersiteApplicationTests {
     @Autowired
     QuestionTextRepository questionTextRepository;
     @Autowired
+    PostMessageTextRepository postMessageTextRepository;
+    @Autowired
+    UserInfoRepository userInfoRepository;
+    @Autowired
     QuestionTextService qs;
 
     @Autowired
     ElasticsearchRestTemplate template;
 
     @Test
-    void esTest(){
+    void esTest1(){
 //        QuestionText qt = new QuestionText();
 //        qt.setqId("001");
 //        qt.setTitle("SpringBoot如何集成Elasticsearch");
@@ -77,6 +90,65 @@ class CodersiteApplicationTests {
         }
         //及时释放es服务器资源
         template.clearScroll(scroll.getScrollId());
+    }
+
+    @Test
+    void esTest2(){
+        PostMessageText test = new PostMessageText();
+        test.setpId("001");
+        test.setTitle("记录第一次使用Spring");
+        List<CommentNode> comments = new ArrayList<>();
+        CommentNode node1 = new CommentNode();
+        node1.setUserId("001");
+        node1.setContent("哇塞哇噻");
+        node1.setTime("2019-12-04");
+        comments.add(node1);
+        test.setComments(comments);
+        List<ContentNode> contents = new ArrayList<>();
+        ContentNode node2 = new ContentNode();
+        node2.setPara("第一次使用Spring，仿佛进入了新世界~");
+        node2.setImage("1.jpg");
+        contents.add(node2);
+        test.setContent(contents);
+        postMessageTextRepository.save(test);
+    }
+
+    // 嵌套对象查询
+    @Test
+    void esTest3(){
+        System.out.println("hello");
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withIndices("postmessagetext")//索引名
+                // 使用nestedQuery进行嵌套查询
+                .withQuery(QueryBuilders.nestedQuery("content",QueryBuilders.matchQuery("content.para","Spring"),ScoreMode.Total)) // 查询条件使用matchquery
+//                .withQuery(QueryBuilders.matchQuery("content", "Spring")) // 查询条件使用matchquery
+//                .withQuery(QueryBuilders.termQuery("title", "Python"))//查询条件，这里简单使用term查询
+//                .withPageable(PageRequest.of(0, 1))//从0页开始查，每页10个结果
+                .build();
+        List<PostMessageText> result = template.queryForList(searchQuery, PostMessageText.class);
+        System.out.println("hello2");
+        System.out.println(result.get(0));
+        System.out.println("hello3");
+    }
+
+    @Test
+    void esTest4(){
+        UserInfo test = new UserInfo();
+        test.setNickname("花花2");
+        test.setSignature("我是最棒的!");
+        test.setUserId("002");
+        List<String> label = new ArrayList<>();
+        label.add("Python");
+        test.setLabels(label);
+        userInfoRepository.save(test);
+    }
+
+
+    // 字符串数组查询
+    @Test
+    void esTest5(){
+        List<UserInfo> result = userInfoRepository.findByLabels("Python");
+        System.out.println(result);
     }
 
     @Test

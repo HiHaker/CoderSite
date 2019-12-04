@@ -10,8 +10,6 @@ import java.util.List;
 public class User {
     // 用户ID 添加唯一索引
     private String userId;
-    // 昵称
-    private String nickname;
     // 密码 必须
     private String password;
     // 生日
@@ -22,16 +20,11 @@ public class User {
     private String registerDate;
     // 头像Id
     private String avatarId;
-    // 个性签名
-    private String signature;
     // 邮箱
     private String mailbox;
     // 背景图片
     private String coverPicture;
-    // 上次登录时间
-//    private String lastLoginTime;
-    // 用户的标签
-    private List<String> labels;
+
     // 用户的关注
     private List<String> follows;
 
@@ -39,21 +32,19 @@ public class User {
 
     }
 
-    public User(String userId, String nickname, String password,
-                String birthday, boolean sex, String registerDate,
-                String avatarId, String signature, String mailbox,
-                String coverPicture, List<String> labels, List<String> follows) {
+    public User(String userId, String password,
+                String birthday, boolean sex,
+                String registerDate, String avatarId,
+                String mailbox, String coverPicture,
+                List<String> follows) {
         this.userId = userId;
-        this.nickname = nickname;
         this.password = password;
         this.birthday = birthday;
         this.sex = sex;
         this.registerDate = registerDate;
         this.avatarId = avatarId;
-        this.signature = signature;
         this.mailbox = mailbox;
         this.coverPicture = coverPicture;
-        this.labels = labels;
         this.follows = follows;
     }
 
@@ -63,14 +54,6 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -121,28 +104,12 @@ public class User {
         this.mailbox = mailbox;
     }
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
     public String getCoverPicture() {
         return coverPicture;
     }
 
     public void setCoverPicture(String coverPicture) {
         this.coverPicture = coverPicture;
-    }
-
-    public List<String> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<String> labels) {
-        this.labels = labels;
     }
 
     public List<String> getFollows() {
@@ -157,16 +124,13 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId='" + userId + '\'' +
-                ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", sex=" + sex +
                 ", registerDate='" + registerDate + '\'' +
                 ", avatarId='" + avatarId + '\'' +
-                ", signature='" + signature + '\'' +
                 ", mailbox='" + mailbox + '\'' +
                 ", coverPicture='" + coverPicture + '\'' +
-                ", labels=" + labels +
                 ", follows=" + follows +
                 '}';
     }
