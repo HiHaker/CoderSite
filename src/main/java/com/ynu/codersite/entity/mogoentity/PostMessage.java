@@ -1,6 +1,7 @@
 package com.ynu.codersite.entity.mogoentity;
 
 import com.ynu.codersite.entity.RelationNode;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class PostMessage {
     // 帖子的id
+    @Id
     private String pId;
     // 用户的id
     private String userId;

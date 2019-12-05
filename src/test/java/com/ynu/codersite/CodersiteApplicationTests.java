@@ -2,6 +2,7 @@ package com.ynu.codersite;
 
 import com.ynu.codersite.entity.CommentNode;
 import com.ynu.codersite.entity.ContentNode;
+import com.ynu.codersite.entity.PostMessageDTO;
 import com.ynu.codersite.entity.esentity.PostMessageText;
 import com.ynu.codersite.entity.esentity.QuestionText;
 import com.ynu.codersite.entity.esentity.UserInfo;

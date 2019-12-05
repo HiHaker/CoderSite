@@ -8,6 +8,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * BY Jianlong
  */
 public interface PostMessageRepository extends MongoRepository<PostMessage, String> {
-    void deletePostMessageByPId(String pId);
-    PostMessage findPostMessageByPId(String pId);
 }

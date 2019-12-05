@@ -5,6 +5,7 @@ package com.ynu.codersite.entity;
  * BY Jianlong
  */
 public class RelationNode {
+    private String id;
     private String userId;
     private String time;
 
@@ -12,9 +13,18 @@ public class RelationNode {
 
     }
 
-    public RelationNode(String userId, String time) {
+    public RelationNode(String id, String userId, String time) {
+        this.id = id;
         this.userId = userId;
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {

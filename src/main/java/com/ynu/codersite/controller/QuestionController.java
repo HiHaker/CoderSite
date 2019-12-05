@@ -45,7 +45,7 @@ public class QuestionController {
     ){
         jsonObject = new JSONObject();
         Question question = new Question();
-        QuestionText questionText = new QuestionText();
+//        QuestionText questionText = new QuestionText();
 
         return null;
     }
