@@ -1,5 +1,6 @@
 package com.ynu.codersite.entity.esentity;
 
+import com.ynu.codersite.entity.CommentNode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -27,6 +28,21 @@ public class QuestionText {
     // 问题的内容，使用ik分词器
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String content;
+    // 问题的回答
+    @Field(type = FieldType.Nested, analyzer = "ik_max_word")
+    private List<CommentNode> answers;
+
+    public QuestionText(){
+
+    }
+
+    public QuestionText(String qId, String title, List<String> labels, String content, List<CommentNode> answers) {
+        this.qId = qId;
+        this.title = title;
+        this.labels = labels;
+        this.content = content;
+        this.answers = answers;
+    }
 
     public String getqId() {
         return qId;
@@ -60,10 +76,22 @@ public class QuestionText {
         this.content = content;
     }
 
-    public QuestionText(String qId, String title, List<String> labels, String content) {
-        this.qId = qId;
-        this.title = title;
-        this.labels = labels;
-        this.content = content;
+    public List<CommentNode> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<CommentNode> answers) {
+        this.answers = answers;
+    }
+
+    @Override
+    public String toString() {
+        return "QuestionText{" +
+                "qId='" + qId + '\'' +
+                ", title='" + title + '\'' +
+                ", labels=" + labels +
+                ", content='" + content + '\'' +
+                ", answers=" + answers +
+                '}';
     }
 }

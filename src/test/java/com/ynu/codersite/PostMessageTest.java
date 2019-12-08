@@ -33,13 +33,13 @@ public class PostMessageTest {
         data.setAid("001");
         data.setUid("001");
         data.setTitle("欢迎来到程序员的世界");
-        data.setPostTime("2019-12-04");
-        List<ContentNode> data1 = new ArrayList<>();
-        data1.add(new ContentNode("你好","001"));
-        data.setContent(data1);
-        List<String> data2 = new ArrayList<>();
-        data2.add("欢迎");
-        data.setLabels(data2);
+        data.setPostTime("2019-12-08");
+        List<ContentNode> content = new ArrayList<>();
+        content.add(new ContentNode("你好","001"));
+        data.setContent(content);
+        List<String> labels = new ArrayList<>();
+        labels.add("欢迎");
+        data.setLabels(labels);
         aPostMessageService.addPostMessage(data);
     }
 
@@ -60,7 +60,12 @@ public class PostMessageTest {
     @Test
     // 增加一条点赞记录测试
     void testAddLikes(){
-        postMessageService.addLike("002","001","002","2019-12-5");
+        postMessageService.addLike("001","001","002","2019-12-5");
+    }
+
+    @Test
+    void deleteLike(){
+        postMessageService.deleteLikeById("001","001");
     }
 
     @Test
@@ -93,6 +98,12 @@ public class PostMessageTest {
     @Test
     // 增加评论测试
     void addComment(){
-        postMessageTextService.addComment("001","002","001","哈哈哈哈","2019-12-8");
+        postMessageTextService.addComment("001","001","001","哈哈哈哈","2019-12-8");
+    }
+
+    // 删除评论测试
+    @Test
+    void deleteComment(){
+        postMessageTextService.deleteComment("001","001");
     }
 }

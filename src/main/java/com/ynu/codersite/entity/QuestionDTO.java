@@ -22,6 +22,10 @@ public class QuestionDTO {
     // 问题的图片
     private List<String> images;
 
+    public QuestionDTO(){
+
+    }
+
     public QuestionDTO(String qid, String uid,
                        String postTime, List<String> labels,
                        String title, String content, List<String> images) {

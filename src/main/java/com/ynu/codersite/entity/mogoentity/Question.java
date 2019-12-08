@@ -1,6 +1,7 @@
 package com.ynu.codersite.entity.mogoentity;
 
 import com.ynu.codersite.entity.RelationNode;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class Question {
 
     // 问题的id 添加唯一索引
+    @Id
     private String qId;
     // 用户ID
     private String userId;

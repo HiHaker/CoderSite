@@ -46,4 +46,17 @@ public class APostMessageService {
         pmtService.deleteItem(id);
         pmService.deletePostMessageById(id);
     }
+
+    /**
+     * 判断文章是否存在
+     * @param aid
+     * @return
+     */
+    public boolean postMessageIsExist(String aid){
+        if (pmService.getPostMessageById(aid) == null){
+            return false;
+        } else{
+            return true;
+        }
+    }
 }

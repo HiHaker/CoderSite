@@ -5,7 +5,6 @@ import com.ynu.codersite.entity.UserDTO;
 import com.ynu.codersite.service.AUserService;
 import com.ynu.codersite.service.mongoservice.UserService;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

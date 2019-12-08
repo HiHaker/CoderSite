@@ -6,6 +6,9 @@ import com.ynu.codersite.repository.esrepoitory.PostMessageTextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created on 2019/12/3 0003
  * BY Jianlong
@@ -39,13 +42,34 @@ public class PostMessageTextService {
      * @param content
      * @param time
      */
-    public void addComment(String aid, String id, String uid, String content, String time) throws NullPointerException{
+    public void addComment(String aid, String id, String uid, String content, String time){
         PostMessageText postMessageText = postMessageTextRepository.findById(aid).orElse(null);
-        if (postMessageText == null) {
-            throw  new NullPointerException();
-        }
         CommentNode commentNode = new CommentNode(id,uid,content,time);
-        postMessageText.getComments().add(commentNode);
+        if (postMessageText.getComments() == null){
+            List<CommentNode> comments = new ArrayList<>();
+            comments.add(commentNode);
+            postMessageText.setComments(comments);
+        } else{
+            postMessageText.getComments().add(commentNode);
+        }
+        postMessageTextRepository.save(postMessageText);
+    }
+
+    /**
+     * 删除一条评论记录
+     * @param aid
+     * @param id
+     */
+    public void deleteComment(String aid, String id){
+        PostMessageText postMessageText = postMessageTextRepository.findById(aid).orElse(null);
+        List<CommentNode> comments = postMessageText.getComments();
+        for (int i=0; i<comments.size(); i++){
+            if (comments.get(i).getId().equals(id)){
+                comments.remove(i);
+                break;
+            }
+        }
+        postMessageText.setComments(comments);
         postMessageTextRepository.save(postMessageText);
     }
 }

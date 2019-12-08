@@ -39,11 +39,8 @@ public class PostMessageService {
      * @param uid
      * @param time
      */
-    public void addLike(String id, String aid, String uid, String time) throws NullPointerException{
+    public void addLike(String aid, String id, String uid, String time){
         PostMessage postMessage = this.getPostMessageById(aid);
-        if (postMessage == null){
-            throw new NullPointerException();
-        }
         RelationNode relationNode = new RelationNode(id, uid, time);
         if (postMessage.getLikes() == null){
             List<RelationNode> likesList = new ArrayList<>();
@@ -62,11 +59,8 @@ public class PostMessageService {
      * @param uid
      * @param time
      */
-    public void addFavorite(String id, String aid, String uid, String time) throws NullPointerException{
+    public void addFavorite(String aid, String id, String uid, String time){
         PostMessage postMessage = this.getPostMessageById(aid);
-        if (postMessage == null){
-            throw new NullPointerException();
-        }
         RelationNode relationNode = new RelationNode(id, uid, time);
         if (postMessage.getFavorites() == null){
             List<RelationNode> favoritesList = new ArrayList<>();

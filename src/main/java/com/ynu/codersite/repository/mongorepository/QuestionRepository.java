@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface QuestionRepository extends MongoRepository<Question, String> {
-    void deleteQuestionByQId(String qId);
-    Question findQuestionByQId(String qId);
 }
