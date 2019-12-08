@@ -1,54 +1,44 @@
-package com.ynu.codersite.entity.mogoentity;
-
-import org.springframework.data.annotation.Id;
+package com.ynu.codersite.entity;
 
 import java.util.List;
 
 /**
- * Created on 2019/11/18 0018
+ * Created on 2019/12/8 0008
  * BY Jianlong
  */
-// 不使用注解@Document，让springboot自动建表
-public class User {
-    // 用户ID 添加唯一索引
-    @Id
+public class UserDTO {
     private String userId;
-    // 密码 必须
+    private String nickname;
     private String password;
-    // 生日
     private String birthday;
-    // 性别
     private boolean sex;
-    // 注册日期 必须
     private String registerDate;
-    // 头像Id
     private String avatarId;
-    // 邮箱
+    private String signature;
     private String mailbox;
-    // 背景图片
     private String coverPicture;
+    private List<String> labels;
 
-    // 用户的关注
-    private List<String> follows;
-
-    public User(){
-
+    public UserDTO() {
     }
 
-    public User(String userId, String password,
-                String birthday, boolean sex,
-                String registerDate, String avatarId,
-                String mailbox, String coverPicture,
-                List<String> follows) {
+    public UserDTO(String userId, String nickname,
+                   String password, String birthday,
+                   boolean sex, String registerDate,
+                   String avatarId, String signature,
+                   String mailbox, String coverPicture,
+                   List<String> labels) {
         this.userId = userId;
+        this.nickname = nickname;
         this.password = password;
         this.birthday = birthday;
         this.sex = sex;
         this.registerDate = registerDate;
         this.avatarId = avatarId;
+        this.signature = signature;
         this.mailbox = mailbox;
         this.coverPicture = coverPicture;
-        this.follows = follows;
+        this.labels = labels;
     }
 
     public String getUserId() {
@@ -57,6 +47,14 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -99,6 +97,14 @@ public class User {
         this.avatarId = avatarId;
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
     public String getMailbox() {
         return mailbox;
     }
@@ -115,26 +121,28 @@ public class User {
         this.coverPicture = coverPicture;
     }
 
-    public List<String> getFollows() {
-        return follows;
+    public List<String> getLabels() {
+        return labels;
     }
 
-    public void setFollows(List<String> follows) {
-        this.follows = follows;
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDTO{" +
                 "userId='" + userId + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", sex=" + sex +
                 ", registerDate='" + registerDate + '\'' +
                 ", avatarId='" + avatarId + '\'' +
+                ", signature='" + signature + '\'' +
                 ", mailbox='" + mailbox + '\'' +
                 ", coverPicture='" + coverPicture + '\'' +
-                ", follows=" + follows +
+                ", labels=" + labels +
                 '}';
     }
 }

@@ -12,9 +12,13 @@ import com.ynu.codersite.repository.esrepoitory.UserInfoRepository;
 import com.ynu.codersite.service.esservice.QuestionTextService;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +27,11 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.ScrolledPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
+import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 class CodersiteApplicationTests {
@@ -94,12 +99,14 @@ class CodersiteApplicationTests {
     }
 
     @Test
+    // 测试插入子文档
     void esTest2(){
         PostMessageText test = new PostMessageText();
         test.setpId("001");
         test.setTitle("记录第一次使用Spring");
         List<CommentNode> comments = new ArrayList<>();
         CommentNode node1 = new CommentNode();
+        node1.setId("001");
         node1.setUserId("001");
         node1.setContent("哇塞哇噻");
         node1.setTime("2019-12-04");
@@ -150,6 +157,44 @@ class CodersiteApplicationTests {
     void esTest5(){
         List<UserInfo> result = userInfoRepository.findByLabels("Python");
         System.out.println(result);
+    }
+
+
+    @Test
+    // 嵌套对象删除
+    void esTest6(){
+        System.out.println("hello");
+        UpdateQuery query = new UpdateQuery();
+        UpdateRequest request = new UpdateRequest();
+        request.index("postmessagetext");
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("id", "001");
+        Script inline = new Script(ScriptType.INLINE, "painless",
+                "ctx._source.comments.remove(ctx._source.comments.id = id);", jsonMap);
+        request.script(inline);
+        if (request == null)
+            System.out.println("request==null");
+        if (query == null)
+            System.out.println("query==null");
+        query.setIndexName("postmessagetext");
+        query.setType("postMessageText");
+        query.setId("001");
+        query.setUpdateRequest(request);
+        template.update(query);
+    }
+
+    @Test
+    void addCommentsTest() throws  IOException{
+        UpdateRequest request = new UpdateRequest();
+        request.index("postmessagetext");
+        request.type("postMessageText");
+        request.id("001");
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("id", "001");
+        Script inline = new Script(ScriptType.INLINE, "painless",
+                "ctx._source.comments.remove(ctx._source.comments.id = params.id);", jsonMap);
+        request.script(inline);
+        UpdateResponse updateResponse = client.update(request, RequestOptions.DEFAULT);
     }
 
     @Test

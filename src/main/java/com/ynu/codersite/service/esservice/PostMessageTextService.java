@@ -1,5 +1,6 @@
 package com.ynu.codersite.service.esservice;
 
+import com.ynu.codersite.entity.CommentNode;
 import com.ynu.codersite.entity.esentity.PostMessageText;
 import com.ynu.codersite.repository.esrepoitory.PostMessageTextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,23 @@ public class PostMessageTextService {
      */
     public void deleteItem(String id){
         postMessageTextRepository.deleteById(id);
+    }
+
+    /**
+     * 增加一条评论记录
+     * @param aid
+     * @param id
+     * @param uid
+     * @param content
+     * @param time
+     */
+    public void addComment(String aid, String id, String uid, String content, String time) throws NullPointerException{
+        PostMessageText postMessageText = postMessageTextRepository.findById(aid).orElse(null);
+        if (postMessageText == null) {
+            throw  new NullPointerException();
+        }
+        CommentNode commentNode = new CommentNode(id,uid,content,time);
+        postMessageText.getComments().add(commentNode);
+        postMessageTextRepository.save(postMessageText);
     }
 }

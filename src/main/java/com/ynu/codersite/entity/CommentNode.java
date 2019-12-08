@@ -5,17 +5,27 @@ package com.ynu.codersite.entity;
  * BY Jianlong
  */
 public class CommentNode {
-    String userId;
-    String content;
-    String time;
+    private String id;
+    private String userId;
+    private String content;
+    private String time;
 
     public CommentNode() {
     }
 
-    public CommentNode(String userId, String content, String time) {
+    public CommentNode(String id, String userId, String content, String time) {
+        this.id = id;
         this.userId = userId;
         this.content = content;
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {

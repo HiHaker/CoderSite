@@ -3,6 +3,7 @@ package com.ynu.codersite;
 import com.ynu.codersite.entity.ContentNode;
 import com.ynu.codersite.entity.PostMessageDTO;
 import com.ynu.codersite.service.APostMessageService;
+import com.ynu.codersite.service.esservice.PostMessageTextService;
 import com.ynu.codersite.service.mongoservice.PostMessageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class PostMessageTest {
     APostMessageService aPostMessageService;
     @Autowired
     PostMessageService postMessageService;
-
+    @Autowired
+    PostMessageTextService postMessageTextService;
 
     @Test
     // 发表帖子测试
@@ -38,7 +40,7 @@ public class PostMessageTest {
         List<String> data2 = new ArrayList<>();
         data2.add("欢迎");
         data.setLabels(data2);
-        aPostMessageService.postPostMessage(data);
+        aPostMessageService.addPostMessage(data);
     }
 
     @Test
@@ -58,7 +60,7 @@ public class PostMessageTest {
     @Test
     // 增加一条点赞记录测试
     void testAddLikes(){
-        aPostMessageService.addLikes("001","001","001","2019-12-5");
+        postMessageService.addLike("002","001","002","2019-12-5");
     }
 
     @Test
@@ -68,5 +70,29 @@ public class PostMessageTest {
     }
 
     // 失败记录，没有考虑刚开始时子文档likes没有对象为空值的情况，造成了空指针错误
+    // 失败记录，由于增加点赞需要先根据文章id进行查询，如果输入了错误的文章id就会造成查询为空，造成了空指针错误
 
+    @Test
+    // 子文档删除测试
+    void testDeleteLike(){
+        postMessageService.deleteLikeById("001","002");
+    }
+
+    @Test
+    // 增加一条收藏记录测试
+    void testAddFavorite(){
+        postMessageService.addFavorite("001","001","001","2019-12-5");
+    }
+
+    @Test
+    // 删除一条收藏测试
+    void testDeleteFavorite(){
+        postMessageService.deleteFavoriteById("001","001");
+    }
+
+    @Test
+    // 增加评论测试
+    void addComment(){
+        postMessageTextService.addComment("001","002","001","哈哈哈哈","2019-12-8");
+    }
 }

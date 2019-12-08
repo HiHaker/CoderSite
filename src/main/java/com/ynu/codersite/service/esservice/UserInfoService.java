@@ -29,4 +29,13 @@ public class UserInfoService {
     public void deleteItem(String id){
         userInfoRepository.deleteById(id);
     }
+
+    /**
+     * 根据id查询用户
+     * @param userId
+     * @return
+     */
+    public UserInfo getUserById(String userId){
+        return userInfoRepository.findById(userId).orElse(null);
+    }
 }

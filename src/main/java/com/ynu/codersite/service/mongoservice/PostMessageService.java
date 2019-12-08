@@ -5,6 +5,9 @@ import com.ynu.codersite.entity.mogoentity.PostMessage;
 import com.ynu.codersite.repository.mongorepository.PostMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,15 +39,41 @@ public class PostMessageService {
      * @param uid
      * @param time
      */
-    public void addLikes(String id, String aid, String uid, String time){
+    public void addLike(String id, String aid, String uid, String time) throws NullPointerException{
         PostMessage postMessage = this.getPostMessageById(aid);
+        if (postMessage == null){
+            throw new NullPointerException();
+        }
         RelationNode relationNode = new RelationNode(id, uid, time);
         if (postMessage.getLikes() == null){
-            List<RelationNode> likeList = new ArrayList<>();
-            likeList.add(relationNode);
-            postMessage.setLikes(likeList);
+            List<RelationNode> likesList = new ArrayList<>();
+            likesList.add(relationNode);
+            postMessage.setLikes(likesList);
         } else {
             postMessage.getLikes().add(relationNode);
+        }
+        this.updatePostMessage(postMessage);
+    }
+
+    /**
+     * 增加一条收藏记录
+     * @param id
+     * @param aid
+     * @param uid
+     * @param time
+     */
+    public void addFavorite(String id, String aid, String uid, String time) throws NullPointerException{
+        PostMessage postMessage = this.getPostMessageById(aid);
+        if (postMessage == null){
+            throw new NullPointerException();
+        }
+        RelationNode relationNode = new RelationNode(id, uid, time);
+        if (postMessage.getFavorites() == null){
+            List<RelationNode> favoritesList = new ArrayList<>();
+            favoritesList.add(relationNode);
+            postMessage.setFavorites(favoritesList);
+        } else {
+            postMessage.getFavorites().add(relationNode);
         }
         this.updatePostMessage(postMessage);
     }
@@ -57,8 +86,28 @@ public class PostMessageService {
         postMessageRepository.deleteById(id);
     }
 
-    public void deleteLikesById(String id){
+    /**
+     * 根据id删除一条点赞记录
+     * @param aid
+     * @param id
+     */
+    public void deleteLikeById(String aid, String id){
+        Query query = new Query(Criteria.where("pId").is(aid));
+        Update update = new Update();
+        update.pull("likes",Query.query(Criteria.where("_id").is(id)));
+        mongoTemplate.updateMulti(query,update,PostMessage.class);
+    }
 
+    /**
+     * 根据id删除一条收藏记录
+     * @param aid
+     * @param id
+     */
+    public void deleteFavoriteById(String aid, String id){
+        Query query = new Query(Criteria.where("pId").is(aid));
+        Update update = new Update();
+        update.pull("favorites",Query.query(Criteria.where("_id").is(id)));
+        mongoTemplate.updateMulti(query,update,PostMessage.class);
     }
 
     /**
