@@ -1,14 +1,26 @@
 package com.ynu.codersite;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ynu.codersite.entity.ContentNode;
 import com.ynu.codersite.entity.PostMessageDTO;
+import com.ynu.codersite.entity.esentity.PostMessageText;
+import com.ynu.codersite.entity.mogoentity.PostMessage;
+import com.ynu.codersite.repository.esrepoitory.PostMessageTextRepository;
 import com.ynu.codersite.service.APostMessageService;
 import com.ynu.codersite.service.esservice.PostMessageTextService;
 import com.ynu.codersite.service.mongoservice.PostMessageService;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +37,10 @@ public class PostMessageTest {
     PostMessageService postMessageService;
     @Autowired
     PostMessageTextService postMessageTextService;
+    @Autowired
+    PostMessageTextRepository postMessageTextRepository;
+    @Autowired
+    ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Test
     // 发表帖子测试
@@ -106,4 +122,71 @@ public class PostMessageTest {
     void deleteComment(){
         postMessageTextService.deleteComment("001","001");
     }
+
+    @Test
+    void pageQuery(){
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withIndices("postmessagetext")//索引名
+                .withQuery(QueryBuilders.matchQuery("title", "如何")) // 查询条件使用matchquery
+                .withPageable(PageRequest.of(0, 2))//从0页开始查，每页1个结果
+                .build();
+        List<PostMessageText> result = elasticsearchRestTemplate.queryForList(searchQuery, PostMessageText.class);
+        for (PostMessageText pt: result){
+            System.out.println(pt);
+        }
+    }
+
+    @Test
+    void pageQueryJPA(){
+        Page<PostMessageText> result = postMessageTextRepository.findByTitle("如何", PageRequest.of(0, 2));
+        System.out.println(result.getTotalPages());
+        System.out.println(result.getTotalElements());
+        System.out.println(result.getContent());
+    }
+
+    @Test
+    void pageOrderQueryJPA(){
+        Page<PostMessageText> result = postMessageTextRepository.findByOrderByPostTimeDesc(PageRequest.of(0, 10));
+        System.out.println(result.getTotalPages());
+        System.out.println(result.getTotalElements());
+        System.out.println(result.getContent().get(0));
+    }
+
+    @Test
+    void getNewestPostMessage(){
+        List<JSONObject> result = aPostMessageService.getNewestPostMessage(0);
+        System.out.println(result.get(0).get("aid"));
+    }
+
+    @Test
+    void getFollowsNewestPM(){
+        aPostMessageService.getFollowsNewestPM("001");
+    }
+
+    @Test
+   void getUserNewestPM(){
+        List<PostMessage> result = postMessageService.getUserNewestPM("001",0);
+        for (PostMessage pm:result){
+            System.out.println(pm);
+        }
+   }
+
+   @Test
+   void getNewestPostMessageByKeyword(){
+        List<PostMessageText> result = postMessageTextService.getNewestPostMessageByKeyword("学习",0);
+        if (result == null){
+            System.out.println("null");
+        }
+        for (PostMessageText pmt:result){
+            System.out.println(pmt);
+        }
+   }
+
+   @Test
+   void pageQueryByLabel(){
+       Page<PostMessageText> result = postMessageTextRepository.findByLabelsContainsOrderByPostTimeDesc("坚持",PageRequest.of(0, 10));
+       System.out.println(result.getTotalPages());
+       System.out.println(result.getTotalElements());
+       System.out.println(result.getContent().get(0));
+   }
 }

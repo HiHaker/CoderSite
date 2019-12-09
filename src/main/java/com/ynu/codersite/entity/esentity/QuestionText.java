@@ -31,17 +31,21 @@ public class QuestionText {
     // 问题的回答
     @Field(type = FieldType.Nested, analyzer = "ik_max_word")
     private List<CommentNode> answers;
+    // 发表时间
+    @Field(type = FieldType.Date)
+    private String postTime;
 
     public QuestionText(){
 
     }
 
-    public QuestionText(String qId, String title, List<String> labels, String content, List<CommentNode> answers) {
+    public QuestionText(String qId, String title, List<String> labels, String content, List<CommentNode> answers, String postTime) {
         this.qId = qId;
         this.title = title;
         this.labels = labels;
         this.content = content;
         this.answers = answers;
+        this.postTime = postTime;
     }
 
     public String getqId() {
@@ -84,6 +88,14 @@ public class QuestionText {
         this.answers = answers;
     }
 
+    public String getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
+    }
+
     @Override
     public String toString() {
         return "QuestionText{" +
@@ -92,6 +104,7 @@ public class QuestionText {
                 ", labels=" + labels +
                 ", content='" + content + '\'' +
                 ", answers=" + answers +
+                ", postTime='" + postTime + '\'' +
                 '}';
     }
 }

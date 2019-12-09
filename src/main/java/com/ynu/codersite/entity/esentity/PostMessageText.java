@@ -29,6 +29,9 @@ public class PostMessageText {
    // 帖子的评论
     @Field(type = FieldType.Nested, analyzer = "ik_max_word")
     private List<CommentNode> comments;
+    // 发表时间
+    @Field(type = FieldType.Date)
+    private String postTime;
 
     public String getpId() {
         return pId;
@@ -70,6 +73,14 @@ public class PostMessageText {
         this.comments = comments;
     }
 
+    public String getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(String postTime) {
+        this.postTime = postTime;
+    }
+
     @Override
     public String toString() {
         return "PostMessageText{" +
@@ -78,6 +89,7 @@ public class PostMessageText {
                 ", labels=" + labels +
                 ", content=" + content +
                 ", comments=" + comments +
+                ", postTime='" + postTime + '\'' +
                 '}';
     }
 }

@@ -4,7 +4,14 @@ import com.ynu.codersite.entity.RelationNode;
 import com.ynu.codersite.entity.mogoentity.PostMessage;
 import com.ynu.codersite.repository.mongorepository.PostMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.Fields;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -118,5 +125,24 @@ public class PostMessageService {
      */
     public PostMessage getPostMessageById(String id){
         return postMessageRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * 根据用户id获取其发表的所有帖子
+     * @param userId
+     * @return
+     */
+    public List<PostMessage> getByUserId(String userId){
+        return postMessageRepository.findByUserId(userId);
+    }
+
+    /**
+     * 分页查询某用户发表的最新的10条文章
+     * @param page
+     * @return
+     */
+    public List<PostMessage> getUserNewestPM(String userId, Integer page){
+        Page<PostMessage> pageResult = postMessageRepository.findByUserIdOrderByPostTimeDesc(userId, PageRequest.of(page,10));
+        return pageResult.getContent();
     }
 }

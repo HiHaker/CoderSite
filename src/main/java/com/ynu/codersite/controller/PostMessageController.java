@@ -199,4 +199,89 @@ public class PostMessageController {
         return msg;
     }
 
+    /**
+     * 获取最新10条文章
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "获取最新的10条文章", notes = "获取最新的10条文章")
+    @RequestMapping(value = "/getNewArticles", method = RequestMethod.GET)
+    public JSONObject getNewestPostMessage(
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getNewestPostMessage(page));
+        return msg;
+    }
+
+    /**
+     * 获取最新10条文章
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "获取最新的10条文章", notes = "获取最新的10条文章")
+    @RequestMapping(value = "/getUserNewestPM", method = RequestMethod.GET)
+    public JSONObject getUserNewestPM(
+            @RequestParam String uid,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getUserNewestPM(uid, page));
+        return msg;
+    }
+
+    /**
+     * 获取关注的人发表的最新10条文章
+     * @param uid
+     * @return
+     */
+    @ApiOperation(value = "获取关注的人发表的最新的10条文章", notes = "获取关注的人发表的最新的10条文章")
+    @RequestMapping(value = "/getFollowsArticles", method = RequestMethod.GET)
+    public JSONObject getFollowsNewestPM(
+            @RequestParam String uid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getFollowsNewestPM(uid));
+        return msg;
+    }
+
+    /**
+     * 根据关键词查询最新的文章（标题和内容）
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "根据关键词查询最新的文章（标题和内容）", notes = "根据关键词查询最新的文章（标题和内容）")
+    @RequestMapping(value = "/getArticlesByKeywords", method = RequestMethod.GET)
+    public JSONObject getArticlesByKeywords(
+            @RequestParam String keyword,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getNewestPostMessageByKeyword(keyword, page));
+        return msg;
+    }
+
+    /**
+     * 根据关键词查询最新的文章(标签)
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "根据关键词查询最新的文章(标签)", notes = "根据关键词查询最新的文章(标签)")
+    @RequestMapping(value = "/getArticlesByLabels", method = RequestMethod.GET)
+    public JSONObject getArticlesByLabels(
+            @RequestParam String keyword,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getNewestPMByLabel(keyword, page));
+        return msg;
+    }
+
 }

@@ -32,6 +32,7 @@ public class AQuestionService {
         questionText.setTitle(questionDTO.getTitle());
         questionText.setContent(questionDTO.getContent());
         questionText.setLabels(questionDTO.getLabels());
+        questionText.setPostTime(questionDTO.getPostTime());
         questionTextService.addItem(questionText);
         // 存储mongoDB对象
         Question question = new Question();
