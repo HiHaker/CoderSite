@@ -4,6 +4,8 @@ import com.ynu.codersite.entity.RelationNode;
 import com.ynu.codersite.entity.mogoentity.Question;
 import com.ynu.codersite.repository.mongorepository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -119,5 +121,25 @@ public class QuestionService {
         Update update = new Update();
         update.pull("favorites",Query.query(Criteria.where("_id").is(id)));
         mongoTemplate.updateMulti(query,update,Question.class);
+    }
+
+    /**
+     * 根据用户id获取其发表的所有问题
+     * @param userId
+     * @return
+     */
+    public List<Question> getByUserId(String userId){
+        return questionRepository.findByUserId(userId);
+    }
+
+    /**
+     * 分页查询某用户发表的最新的10条问题
+     * @param userId
+     * @param page
+     * @return
+     */
+    public List<Question> getUserNewestQuestion(String userId, Integer page){
+        Page<Question> pageResult = questionRepository.findByUserIdOrderByPostTimeDesc(userId, PageRequest.of(page,10));
+        return pageResult.getContent();
     }
 }

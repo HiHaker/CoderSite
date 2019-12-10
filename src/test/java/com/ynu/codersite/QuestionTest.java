@@ -1,6 +1,7 @@
 package com.ynu.codersite;
 
 import com.ynu.codersite.entity.QuestionDTO;
+import com.ynu.codersite.entity.esentity.QuestionText;
 import com.ynu.codersite.service.AQuestionService;
 import com.ynu.codersite.service.esservice.QuestionTextService;
 import com.ynu.codersite.service.mongoservice.QuestionService;
@@ -94,5 +95,13 @@ public class QuestionTest {
     @Test
     void deleteComment(){
         questionTextService.deleteAnswer("001","001");
+    }
+
+    @Test
+    void getNewestQuestionByKeyword(){
+        List<QuestionText> result = questionTextService.getNewestQuestionByKeyword("安装",0);
+        for (QuestionText qt:result){
+            System.out.println(qt);
+        }
     }
 }

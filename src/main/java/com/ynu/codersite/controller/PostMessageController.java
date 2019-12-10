@@ -216,11 +216,11 @@ public class PostMessageController {
     }
 
     /**
-     * 获取最新10条文章
+     * 获取用户发表的最新10条文章
      * @param page
      * @return
      */
-    @ApiOperation(value = "获取最新的10条文章", notes = "获取最新的10条文章")
+    @ApiOperation(value = "获取用户发表的最新的10条文章", notes = "获取用户发表的最新的10条文章")
     @RequestMapping(value = "/getUserNewestPM", method = RequestMethod.GET)
     public JSONObject getUserNewestPM(
             @RequestParam String uid,
@@ -237,7 +237,7 @@ public class PostMessageController {
      * @param uid
      * @return
      */
-    @ApiOperation(value = "获取关注的人发表的最新的10条文章", notes = "获取关注的人发表的最新的10条文章")
+    @ApiOperation(value = "获取关注的人发表的文章", notes = "获取关注的人发表的文章")
     @RequestMapping(value = "/getFollowsArticles", method = RequestMethod.GET)
     public JSONObject getFollowsNewestPM(
             @RequestParam String uid

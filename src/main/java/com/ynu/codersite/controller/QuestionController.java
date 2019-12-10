@@ -206,4 +206,90 @@ public class QuestionController {
         msg.put("message","删除成功");
         return msg;
     }
+
+    /**
+     * 获取最新10条问题
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "获取最新的10条问题", notes = "获取最新的10条问题")
+    @RequestMapping(value = "/getNewQuestions", method = RequestMethod.GET)
+    public JSONObject getNewQuestions(
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getNewestQuestion(page));
+        return msg;
+    }
+
+    /**
+     * 获取用户发表的最新10条问题
+     * @param uid
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "获取用户发表的最新的10条问题", notes = "获取用户发表的最新的10条问题")
+    @RequestMapping(value = "/getUserNewestQuestion", method = RequestMethod.GET)
+    public JSONObject etUserNewestQuestion(
+            @RequestParam String uid,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getUserNewestQuestion(uid, page));
+        return msg;
+    }
+
+    /**
+     * 获取关注的人发表的问题
+     * @param uid
+     * @return
+     */
+    @ApiOperation(value = "获取关注的人发表的问题", notes = "获取关注的人发表的问题")
+    @RequestMapping(value = "/getFollowsQuestions", method = RequestMethod.GET)
+    public JSONObject getFollowsNewestQuestion(
+            @RequestParam String uid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getFollowsNewestQuestion(uid));
+        return msg;
+    }
+
+    /**
+     * 根据关键词查询最新的问题（标题和内容）
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "根据关键词查询最新的问题（标题和内容）", notes = "根据关键词查询最新的问题（标题和内容）")
+    @RequestMapping(value = "/getQuestionsByKeywords", method = RequestMethod.GET)
+    public JSONObject getNewestQuestionByKeyword(
+            @RequestParam String keyword,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getNewestQuestionByKeyword(keyword, page));
+        return msg;
+    }
+
+    /**
+     * 根据关键词查询最新的问题(标签)
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @ApiOperation(value = "根据关键词查询最新的问题(标签)", notes = "根据关键词查询最新的问题(标签)")
+    @RequestMapping(value = "/getQuestionsByLabels", method = RequestMethod.GET)
+    public JSONObject getNewestQuestionByLabel(
+            @RequestParam String keyword,
+            @RequestParam Integer page
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getNewestQuestionByLabel(keyword, page));
+        return msg;
+    }
 }

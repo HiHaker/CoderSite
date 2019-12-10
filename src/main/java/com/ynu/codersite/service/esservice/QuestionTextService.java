@@ -1,11 +1,11 @@
 package com.ynu.codersite.service.esservice;
 
 import com.ynu.codersite.entity.CommentNode;
-import com.ynu.codersite.entity.esentity.PostMessageText;
 import com.ynu.codersite.entity.esentity.QuestionText;
-import com.ynu.codersite.entity.mogoentity.Question;
 import com.ynu.codersite.repository.esrepoitory.QuestionTextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,5 +73,46 @@ public class QuestionTextService {
         }
         questionText.setAnswers(answers);
         questionTextRepository.save(questionText);
+    }
+
+    /**
+     * 根据id查询问题文本
+     * @param qId
+     * @return
+     */
+    public QuestionText getById(String qId){
+        return questionTextRepository.findById(qId).orElse(null);
+    }
+
+    /**
+     * 获取最新的10个问题
+     * @param page
+     * @return
+     */
+    public List<QuestionText> getNewestQuestion(Integer page){
+        Page<QuestionText> pageResult = questionTextRepository.findByOrderByPostTimeDesc(PageRequest.of(page,10));
+        return pageResult.getContent();
+    }
+
+    /**
+     * 根据关键词查询最新的问题（标题和内容）
+     * @param keyword
+     * @param page
+     * @return
+     */
+    public List<QuestionText> getNewestQuestionByKeyword(String keyword, Integer page){
+        Page<QuestionText> pageResult = questionTextRepository.findByTitleLikeOrContentLikeOrderByPostTimeDesc(keyword, keyword, PageRequest.of(page,10));
+        return pageResult.getContent();
+    }
+
+    /**
+     * 根据关键词查询最新的问题（标签）
+     * @param keyword
+     * @param page
+     * @return
+     */
+    public List<QuestionText> getNewestQuestionByLabel(String keyword, Integer page){
+        Page<QuestionText> pageResult = questionTextRepository.findByLabelsContainsOrderByPostTimeDesc(keyword, PageRequest.of(page,10));
+        return pageResult.getContent();
     }
 }
