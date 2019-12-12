@@ -124,6 +124,14 @@ public class QuestionService {
     }
 
     /**
+     * 获取全部问题
+     * @return
+     */
+    public List<Question> getAllQuestion(){
+        return questionRepository.findAll();
+    }
+
+    /**
      * 根据用户id获取其发表的所有问题
      * @param userId
      * @return

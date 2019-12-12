@@ -3,6 +3,7 @@ package com.ynu.codersite.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ynu.codersite.entity.QuestionDTO;
 import com.ynu.codersite.service.AQuestionService;
+import com.ynu.codersite.service.AUserService;
 import com.ynu.codersite.service.esservice.QuestionTextService;
 import com.ynu.codersite.service.mongoservice.QuestionService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * Created on 2019/12/4 0004
  * BY Jianlong
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
@@ -23,6 +25,8 @@ public class QuestionController {
     QuestionService questionService;
     @Autowired
     AQuestionService aQuestionService;
+    @Autowired
+    AUserService aUserService;
 
     /**
      * 新增一个问题
@@ -208,6 +212,34 @@ public class QuestionController {
     }
 
     /**
+     * 根据id获取问题
+     * @return
+     */
+    @ApiOperation(value = "根据id获取问题", notes = "根据id获取问题")
+    @RequestMapping(value = "/getQuestionById", method = RequestMethod.GET)
+    public JSONObject getQuestionById(
+            @RequestParam String qid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("question",aQuestionService.getQuestionById(qid));
+        return msg;
+    }
+
+    /**
+     * 获取全部问题
+     * @return
+     */
+    @ApiOperation(value = "获取全部问题", notes = "获取全部问题")
+    @RequestMapping(value = "/getAllQuestions", method = RequestMethod.GET)
+    public JSONObject getAllQuestions(){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("questionList",aQuestionService.getAllQuestion());
+        return msg;
+    }
+
+    /**
      * 获取最新10条问题
      * @param page
      * @return
@@ -236,8 +268,14 @@ public class QuestionController {
             @RequestParam Integer page
     ){
         JSONObject msg = new JSONObject();
-        msg.put("code",0);
-        msg.put("questionList",aQuestionService.getUserNewestQuestion(uid, page));
+
+        if (aUserService.userIsExist(uid)){
+            msg.put("code",0);
+            msg.put("questionList",aQuestionService.getUserNewestQuestion(uid, page));
+        } else{
+            msg.put("code","-1");
+            msg.put("message","查询失败, 用户不存在");
+        }
         return msg;
     }
 
@@ -251,9 +289,16 @@ public class QuestionController {
     public JSONObject getFollowsNewestQuestion(
             @RequestParam String uid
     ){
+
         JSONObject msg = new JSONObject();
-        msg.put("code",0);
-        msg.put("questionList",aQuestionService.getFollowsNewestQuestion(uid));
+
+        if (aUserService.userIsExist(uid)){
+            msg.put("code",0);
+            msg.put("questionList",aQuestionService.getFollowsNewestQuestion(uid));
+        } else{
+            msg.put("code","-1");
+            msg.put("message","查询失败, 用户不存在");
+        }
         return msg;
     }
 

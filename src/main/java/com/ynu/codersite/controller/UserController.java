@@ -15,6 +15,7 @@ import java.util.List;
  * Created on 2019/11/22 0022
  * BY Jianlong
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -195,6 +196,20 @@ public class UserController {
         UserDTO userDTO = aUserService.getUserById(uid);
         msg.put("code",0);
         msg.put("userInfo",userDTO);
+        return msg;
+    }
+
+
+    /**
+     * 获取全部用户
+     * @return
+     */
+    @ApiOperation(value = "获取全部用户", notes = "获取全部用户")
+    @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+    public JSONObject getAllUser(){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("userList",aUserService.getAllUsers());
         return msg;
     }
 

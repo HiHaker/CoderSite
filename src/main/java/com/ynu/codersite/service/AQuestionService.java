@@ -121,6 +121,54 @@ public class AQuestionService {
     }
 
     /**
+     * 获得DTO对象
+     * @param qt
+     * @param q
+     * @return
+     */
+    public QuestionDTO getDTO(QuestionText qt, Question q){
+        QuestionDTO qDTO = new QuestionDTO();
+        qDTO.setQid(q.getqId());
+        qDTO.setUid(q.getUserId());
+        qDTO.setTitle(qt.getTitle());
+        qDTO.setLabels(qt.getLabels());
+        qDTO.setPostTime(qt.getPostTime());
+        qDTO.setContent(qt.getContent());
+        qDTO.setImages(q.getImages());
+
+        return qDTO;
+    }
+
+    /**
+     * 根据问题id获取问题
+     * @param qid
+     * @return
+     */
+    public JSONObject getQuestionById(String qid){
+        QuestionText qt = questionTextService.getById(qid);
+        Question q = questionService.getQuestionById(qid);
+        return encapsulateJson(q, qt);
+    }
+
+    /**
+     * 获得全部问题
+     * @return
+     */
+    public List<QuestionDTO> getAllQuestion(){
+        List<QuestionText> questionTexts = questionTextService.getAllQuestionText();
+        List<Question> questions = questionService.getAllQuestion();
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+
+        for (int i=0; i<questions.size(); i++){
+            QuestionText qt = questionTexts.get(i);
+            Question q = questions.get(i);
+            questionDTOS.add(getDTO(qt, q));
+        }
+
+        return questionDTOS;
+    }
+
+    /**
      * 获取最新的10个问题
      * @param page
      * @return

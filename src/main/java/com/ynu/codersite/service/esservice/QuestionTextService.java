@@ -85,6 +85,14 @@ public class QuestionTextService {
     }
 
     /**
+     * 获取全部问题文本
+     * @return
+     */
+    public List<QuestionText> getAllQuestionText(){
+        return questionTextRepository.findAll();
+    }
+
+    /**
      * 获取最新的10个问题
      * @param page
      * @return

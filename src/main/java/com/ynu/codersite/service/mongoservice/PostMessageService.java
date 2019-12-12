@@ -120,6 +120,14 @@ public class PostMessageService {
     }
 
     /**
+     * 获取全部帖子
+     * @return
+     */
+    public List<PostMessage> getAllPostMessage(){
+        return postMessageRepository.findAll();
+    }
+
+    /**
      * 根据id查询一个帖子
      * @param id
      */

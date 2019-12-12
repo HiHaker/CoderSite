@@ -5,11 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+import java.util.List;
+
 /**
  * Created on 2019/12/3 0003
  * BY Jianlong
  */
 public interface PostMessageTextRepository extends ElasticsearchRepository<PostMessageText, String> {
+    List<PostMessageText> findAll();
     Page<PostMessageText> findByTitle(String key1, Pageable of);
     Page<PostMessageText> findByTitleOrderByPostTimeAsc(String key1, Pageable of);
     // 根据发表时间排序（最新）分页查询

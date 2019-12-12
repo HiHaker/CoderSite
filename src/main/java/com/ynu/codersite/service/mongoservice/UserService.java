@@ -106,6 +106,14 @@ public class UserService {
     }
 
     /**
+     * 获取全部用户
+     * @return
+     */
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    /**
      * 获取用户的全部粉丝的id列表
      * @param userId
      * @return

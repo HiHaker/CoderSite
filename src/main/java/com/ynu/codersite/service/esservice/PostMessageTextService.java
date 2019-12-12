@@ -83,6 +83,14 @@ public class PostMessageTextService {
     }
 
     /**
+     * 获取全部帖子文本
+     * @return
+     */
+    public List<PostMessageText> getAllPostMessageText(){
+        return postMessageTextRepository.findAll();
+    }
+
+    /**
      * 根据id查询对象
      * @param pId
      * @return

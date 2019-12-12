@@ -177,6 +177,51 @@ public class APostMessageService {
     }
 
     /**
+     * DTO对象转换
+     * @param pmt
+     * @param pm
+     * @return
+     */
+    public PostMessageDTO getDTO(PostMessageText pmt, PostMessage pm){
+        PostMessageDTO pmDTO = new PostMessageDTO();
+        pmDTO.setAid(pm.getpId());
+        pmDTO.setUid(pm.getUserId());
+        pmDTO.setContent(pmt.getContent());
+        pmDTO.setLabels(pmt.getLabels());
+        pmDTO.setPostTime(pmt.getPostTime());
+        return pmDTO;
+    }
+
+    /**
+     * 根据帖子id获得帖子
+     * @param aid
+     * @return
+     */
+    public JSONObject getPostMessageById(String aid){
+        PostMessageText pmt = pmtService.getById(aid);
+        PostMessage pm = pmService.getPostMessageById(aid);
+        return encapsulateJson(pm, pmt);
+    }
+
+    /**
+     * 获取全部帖子
+     * @return
+     */
+    public List<PostMessageDTO> getAllPostMessage(){
+        List<PostMessageText> postMessageTexts = pmtService.getAllPostMessageText();
+        List<PostMessage> postMessages = pmService.getAllPostMessage();
+        List<PostMessageDTO> pmDTOS = new ArrayList<>();
+
+        for (int i=0; i<postMessages.size(); i++){
+            PostMessageText pmt = postMessageTexts.get(i);
+            PostMessage pm = postMessages.get(i);
+            pmDTOS.add(getDTO(pmt,pm));
+        }
+
+        return pmDTOS;
+    }
+
+    /**
      * 返回关注的人发表的最新的文章
      * @param userId
      * @return
@@ -184,6 +229,10 @@ public class APostMessageService {
     public List<JSONObject> getFollowsNewestPM(String userId){
         List<PostMessage> result = new ArrayList<>();
         List<String> follows = userService.getAllFollows(userId);
+
+        if (follows == null || follows.size() == 0){
+            return null;
+        }
 
         for (String uid:follows){
             result.addAll(pmService.getByUserId(uid));

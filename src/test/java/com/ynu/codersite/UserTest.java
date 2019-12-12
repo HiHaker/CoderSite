@@ -1,8 +1,11 @@
 package com.ynu.codersite;
 
 import com.ynu.codersite.entity.UserDTO;
+import com.ynu.codersite.entity.esentity.UserInfo;
+import com.ynu.codersite.entity.mogoentity.User;
 import com.ynu.codersite.repository.mongorepository.UserRepository;
 import com.ynu.codersite.service.AUserService;
+import com.ynu.codersite.service.esservice.UserInfoService;
 import com.ynu.codersite.service.mongoservice.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class UserTest {
     UserService userService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserInfoService userInfoService;
 
     // 增加一个用户测试
     @Test
@@ -97,5 +102,21 @@ public class UserTest {
     @Test
     void getFollowRecord(){
         System.out.println(userService.isFollow("001","002"));
+    }
+
+    @Test
+    void getAllUsersES(){
+        List<UserInfo> users = userInfoService.getAllUsers();
+        for (UserInfo u:users){
+            System.out.println(u);
+        }
+    }
+
+    @Test
+    void getAllUsersMongo(){
+        List<User> users = userService.getAllUsers();
+        for (User u:users){
+            System.out.println(u);
+        }
     }
 }

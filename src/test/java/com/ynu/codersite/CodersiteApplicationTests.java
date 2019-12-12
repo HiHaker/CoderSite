@@ -51,32 +51,8 @@ class CodersiteApplicationTests {
     @Autowired
     ElasticsearchRestTemplate template;
 
-    @Test
-    void esTest1(){
-//        QuestionText qt = new QuestionText();
-//        qt.setqId("001");
-//        qt.setTitle("SpringBoot如何集成Elasticsearch");
-//        qt.setContent("可以查看官方文档，使用新版的连接方式");
-//
-//        qs.addItem(qt);
-//
-//        QuestionText qt1 = new QuestionText();
-//        qt1.setqId("002");
-//        qt1.setTitle("如何学习好Python");
-//        qt1.setContent("可以查看廖雪峰的官方网站进行学习");
-//
-//        qs.addItem(qt1);
-//
-//        QuestionText qt2 = new QuestionText();
-//        qt2.setqId("003");
-//        qt2.setTitle("如何学习好SpringBoot");
-//        qt2.setContent("可以查看SpringBoot的官方网站进行学习");
-//
-//        qs.addItem(qt2);
-
-//        qs.deleteItem("");
-//        System.out.println(questionTextRepository.findByTitleLike("spring"));
-//        template
+    // ESsearchQuery
+    void ESQuery(){
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withIndices("codersite")//索引名
                 .withQuery(QueryBuilders.matchQuery("title", "如何")) // 查询条件使用matchquery
@@ -98,32 +74,8 @@ class CodersiteApplicationTests {
         template.clearScroll(scroll.getScrollId());
     }
 
-    @Test
-    // 测试插入子文档
-    void esTest2(){
-        PostMessageText test = new PostMessageText();
-        test.setpId("001");
-        test.setTitle("记录第一次使用Spring");
-        List<CommentNode> comments = new ArrayList<>();
-        CommentNode node1 = new CommentNode();
-        node1.setId("001");
-        node1.setUserId("001");
-        node1.setContent("哇塞哇噻");
-        node1.setTime("2019-12-04");
-        comments.add(node1);
-        test.setComments(comments);
-        List<ContentNode> contents = new ArrayList<>();
-        ContentNode node2 = new ContentNode();
-        node2.setPara("第一次使用Spring，仿佛进入了新世界~");
-        node2.setImage("1.jpg");
-        contents.add(node2);
-        test.setContent(contents);
-        postMessageTextRepository.save(test);
-    }
-
     // 嵌套对象查询
-    @Test
-    void esTest3(){
+    void nestQuery(){
         System.out.println("hello");
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withIndices("postmessagetext")//索引名
@@ -139,30 +91,15 @@ class CodersiteApplicationTests {
         System.out.println("hello3");
     }
 
-    @Test
-    void esTest4(){
-        UserInfo test = new UserInfo();
-        test.setNickname("花花2");
-        test.setSignature("我是最棒的!");
-        test.setUserId("002");
-        List<String> label = new ArrayList<>();
-        label.add("Python");
-        test.setLabels(label);
-        userInfoRepository.save(test);
-    }
-
-
     // 字符串数组查询
-    @Test
-    void esTest5(){
+    void listQuery(){
         List<UserInfo> result = userInfoRepository.findByLabels("Python");
         System.out.println(result);
     }
 
 
-    @Test
     // 嵌套对象删除
-    void esTest6(){
+    void nestDelete(){
         System.out.println("hello");
         UpdateQuery query = new UpdateQuery();
         UpdateRequest request = new UpdateRequest();
@@ -181,24 +118,6 @@ class CodersiteApplicationTests {
         query.setId("001");
         query.setUpdateRequest(request);
         template.update(query);
-    }
-
-    @Test
-    void addCommentsTest() throws  IOException{
-        UpdateRequest request = new UpdateRequest();
-        request.index("postmessagetext");
-        request.type("postMessageText");
-        request.id("001");
-        Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("id", "001");
-        Script inline = new Script(ScriptType.INLINE, "painless",
-                "ctx._source.comments.remove(ctx._source.comments.id = params.id);", jsonMap);
-        request.script(inline);
-        UpdateResponse updateResponse = client.update(request, RequestOptions.DEFAULT);
-    }
-
-    @Test
-    void contextLoads() {
     }
 
 }

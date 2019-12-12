@@ -127,16 +127,13 @@ public class AUserService {
     }
 
     /**
-     * 根据id获取用户
-     * @param userId
+     * 获得DTO对象
+     * @param userInfo
+     * @param user
      * @return
      */
-    public UserDTO getUserById(String userId){
+    public UserDTO getDTO(UserInfo userInfo, User user){
         UserDTO userDTO = new UserDTO();
-        // mongoDB信息
-        User user = userService.getUserById(userId);
-        // ES信息
-        UserInfo userInfo = userInfoService.getUserById(userId);
         userDTO.setUserId(user.getUserId());
         userDTO.setNickname(userInfo.getNickname());
         userDTO.setPassword(user.getPassword());
@@ -149,6 +146,39 @@ public class AUserService {
         userDTO.setCoverPicture(user.getCoverPicture());
         userDTO.setLabels(userInfo.getLabels());
         return userDTO;
+    }
+
+    /**
+     * 根据id获取用户
+     * @param userId
+     * @return
+     */
+    public UserDTO getUserById(String userId){
+        UserDTO userDTO = new UserDTO();
+        // mongoDB信息
+        User user = userService.getUserById(userId);
+        // ES信息
+        UserInfo userInfo = userInfoService.getUserById(userId);
+
+        return getDTO(userInfo,user);
+    }
+
+    /**
+     * 获取全部用户
+     * @return
+     */
+    public List<UserDTO> getAllUsers(){
+        List<UserInfo> userInfos = userInfoService.getAllUsers();
+        List<User> users = userService.getAllUsers();
+        List<UserDTO> userDTOS = new ArrayList<>();
+
+        for (int i=0; i<users.size(); i++){
+            UserInfo userInfo = userInfos.get(i);
+            User user = users.get(i);
+            userDTOS.add(getDTO(userInfo, user));
+        }
+
+        return userDTOS;
     }
 
     /**

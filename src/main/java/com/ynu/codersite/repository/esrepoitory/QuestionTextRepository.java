@@ -12,6 +12,7 @@ import java.util.List;
  * BY Jianlong
  */
 public interface QuestionTextRepository extends ElasticsearchRepository<QuestionText, String> {
+    List<QuestionText> findAll();
     Page<QuestionText> findByTitleLike(String title, Pageable page);
     Page<QuestionText> findByOrderByPostTimeDesc(Pageable page);
     Page<QuestionText> findByTitleLikeOrContentLikeOrderByPostTimeDesc(String keyword1, String keywod2, Pageable page);

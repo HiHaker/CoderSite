@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * Created on 2019/12/4 0004
  * BY Jianlong
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/article")
 public class PostMessageController {
@@ -196,6 +197,35 @@ public class PostMessageController {
         postMessageService.deleteFavoriteById(aid, id);
         msg.put("code","0");
         msg.put("message","删除成功");
+        return msg;
+    }
+
+    /**
+     * 根据id获取文章
+     * @param aid
+     * @return
+     */
+    @ApiOperation(value = "根据id获取文章", notes = "根据id获取文章")
+    @RequestMapping(value = "/getArticleById", method = RequestMethod.GET)
+    public JSONObject getArticleById(
+            @RequestParam String aid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("article",aPostMessageService.getPostMessageById(aid));
+        return msg;
+    }
+
+    /**
+     * 查询全部文章
+     * @return
+     */
+    @ApiOperation(value = "查询全部文章", notes = "查询全部文章")
+    @RequestMapping(value = "/getAllArticles", method = RequestMethod.GET)
+    public JSONObject getAllArticles(){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("articleList",aPostMessageService.getAllPostMessage());
         return msg;
     }
 

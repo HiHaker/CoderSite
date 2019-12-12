@@ -10,5 +10,6 @@ import java.util.List;
  * BY Jianlong
  */
 public interface UserInfoRepository extends ElasticsearchRepository<UserInfo, String> {
+    List<UserInfo> findAll();
     List<UserInfo> findByLabels(String keyword);
 }
