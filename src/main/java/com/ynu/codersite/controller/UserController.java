@@ -134,6 +134,17 @@ public class UserController {
         return msg;
     }
 
+    @ApiOperation(value = "获取用户资料", notes = "获取用户资料")
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    public JSONObject getUserInfo(
+            @RequestParam String uid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("userInfo",aUserService.getUserInfo(uid));
+        return msg;
+    }
+
     /**
      * 增加用户关注
      * @param uid
@@ -199,6 +210,22 @@ public class UserController {
         return msg;
     }
 
+    /**
+     * 是否关注某用户
+     * @param uid
+     * @return
+     */
+    @ApiOperation(value = "是否关注某用户", notes = "是否关注某用户")
+    @RequestMapping(value = "/isFollow", method = RequestMethod.GET)
+    public JSONObject isFollow(
+            @RequestParam String uid,
+            @RequestParam String objId
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("isFollow",userService.isFollow(uid, objId));
+        return msg;
+    }
 
     /**
      * 获取全部用户

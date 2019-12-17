@@ -1,10 +1,19 @@
 package com.ynu.codersite.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ynu.codersite.entity.CommentNode;
 import com.ynu.codersite.entity.UserDTO;
+import com.ynu.codersite.entity.esentity.PostMessageText;
+import com.ynu.codersite.entity.esentity.QuestionText;
 import com.ynu.codersite.entity.esentity.UserInfo;
+import com.ynu.codersite.entity.mogoentity.PostMessage;
+import com.ynu.codersite.entity.mogoentity.Question;
 import com.ynu.codersite.entity.mogoentity.User;
+import com.ynu.codersite.service.esservice.PostMessageTextService;
+import com.ynu.codersite.service.esservice.QuestionTextService;
 import com.ynu.codersite.service.esservice.UserInfoService;
+import com.ynu.codersite.service.mongoservice.PostMessageService;
+import com.ynu.codersite.service.mongoservice.QuestionService;
 import com.ynu.codersite.service.mongoservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +29,20 @@ import java.util.List;
 @Service
 public class AUserService {
 
-    // ES数据库
-    @Autowired
-    UserInfoService userInfoService;
     // Mongodb数据库
     @Autowired
     UserService userService;
+    // ES数据库
+    @Autowired
+    UserInfoService userInfoService;
+    @Autowired
+    PostMessageService postMessageService;
+    @Autowired
+    PostMessageTextService postMessageTextService;
+    @Autowired
+    QuestionService questionService;
+    @Autowired
+    QuestionTextService questionTextService;
 
     /**
      * 增加一个用户
@@ -64,6 +81,65 @@ public class AUserService {
         userInfoService.deleteItem(id);
         // 删除mongo对象
         userService.deleteUserById(id);
+        // 删除用户发表的帖子ES
+        List<PostMessage> postMessages = postMessageService.getByUserId(id);
+        for (PostMessage p:postMessages){
+            postMessageTextService.deleteItem(p.getpId());
+        }
+        // 删除用户发表的帖子Mongo
+        postMessageService.deletePostMessageByUid(id);
+
+        // 删除用户发表的问题ES
+        List<Question> questions = questionService.getByUserId(id);
+        for (Question q:questions){
+            questionTextService.deleteItem(q.getqId());
+        }
+        // 删除用户发表的问题Mongo
+        questionService.deleteQuestionByUid(id);
+
+        List<PostMessage> pmList = postMessageService.getAllPostMessage();
+        // 删除用户的点赞、收藏
+        for (PostMessage pm:pmList){
+            postMessageService.deleteLikeByUid(pm.getpId(), id);
+            postMessageService.deleteFavoriteById(pm.getpId(), id);
+        }
+        // 删除评论
+        List<PostMessageText> pmtList = postMessageTextService.getAllPostMessageText();
+        for (PostMessageText pmt:pmtList){
+            List<CommentNode> commentNodes = pmt.getComments();
+            if (commentNodes != null){
+                for (int i=0; i<commentNodes.size(); i++){
+                    CommentNode c = commentNodes.get(i);
+                    if (c.getUserId().equals(id)){
+                        commentNodes.remove(i);
+                    }
+                }
+                pmt.setComments(commentNodes);
+                postMessageTextService.addItem(pmt);
+            }
+        }
+
+        List<Question> qList = questionService.getAllQuestion();
+        // 删除用户的点赞、收藏
+        for (Question q:qList){
+            questionService.deleteLikeByUid(q.getqId(), id);
+            questionService.deleteFavoriteByUid(q.getqId(), id);
+        }
+        // 删除回答
+        List<QuestionText> qtList = questionTextService.getAllQuestionText();
+        for (QuestionText qt:qtList){
+            List<CommentNode> commentNodes = qt.getAnswers();
+            if (commentNodes != null){
+                for (int i=0; i<commentNodes.size(); i++){
+                    CommentNode c = commentNodes.get(i);
+                    if (c.getUserId().equals(id)){
+                        commentNodes.remove(i);
+                    }
+                }
+                qt.setAnswers(commentNodes);
+                questionTextService.addItem(qt);
+            }
+        }
     }
 
     /**
@@ -164,6 +240,25 @@ public class AUserService {
     }
 
     /**
+     * 获取用户资料
+     * @param userId
+     * @return
+     */
+    public JSONObject getUserInfo(String userId){
+        UserInfo userInfo = userInfoService.getUserById(userId);
+        User user = userService.getUserById(userId);
+
+        JSONObject result = new JSONObject();
+        result.put("userBasicInfo",getDTO(userInfo,user));
+        result.put("articleCount", postMessageService.getByUserId(userId).size());
+        result.put("questionCount", questionService.getByUserId(userId).size());
+        result.put("attentCount",userService.getAllFollows(userId).size());
+        result.put("fansCount",userService.getAllFans(userId).size());
+
+        return result;
+    }
+
+    /**
      * 获取全部用户
      * @return
      */
@@ -191,8 +286,10 @@ public class AUserService {
         List<String> followsList = userService.getAllFollows(userId);
         for (String id:followsList){
             UserInfo userInfo = userInfoService.getUserById(id);
+            User user = userService.getUserById(id);
             item = new JSONObject();
             item.put("uid",userInfo.getUserId());
+            item.put("avatar",user.getAvatarId());
             item.put("nickname",userInfo.getNickname());
             item.put("signature",userInfo.getSignature());
             result.add(item);
@@ -210,8 +307,10 @@ public class AUserService {
         List<String> fansList = userService.getAllFans(userId);
         for (String id:fansList){
             UserInfo userInfo = userInfoService.getUserById(id);
+            User user = userService.getUserById(id);
             item = new JSONObject();
             item.put("uid",userInfo.getUserId());
+            item.put("avatar",user.getAvatarId());
             item.put("nickname",userInfo.getNickname());
             item.put("signature",userInfo.getSignature());
             item.put("isAttent",userService.isFollow(userId, id));

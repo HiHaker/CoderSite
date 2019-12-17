@@ -6,12 +6,7 @@ import com.ynu.codersite.repository.mongorepository.PostMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.Fields;
-import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -88,6 +83,14 @@ public class PostMessageService {
     }
 
     /**
+     * 根据用户id删除一个帖子
+     * @param uid
+     */
+    public void deletePostMessageByUid(String uid){
+        postMessageRepository.deleteByUserId(uid);
+    }
+
+    /**
      * 根据id删除一条点赞记录
      * @param aid
      * @param id
@@ -100,6 +103,18 @@ public class PostMessageService {
     }
 
     /**
+     * 根据用户id删除其点赞记录
+     * @param aid
+     * @param uid
+     */
+    public void deleteLikeByUid(String aid, String uid){
+        Query query = new Query(Criteria.where("pId").is(aid));
+        Update update = new Update();
+        update.pull("likes",Query.query(Criteria.where("userId").is(uid)));
+        mongoTemplate.updateMulti(query,update,PostMessage.class);
+    }
+
+    /**
      * 根据id删除一条收藏记录
      * @param aid
      * @param id
@@ -108,6 +123,18 @@ public class PostMessageService {
         Query query = new Query(Criteria.where("pId").is(aid));
         Update update = new Update();
         update.pull("favorites",Query.query(Criteria.where("_id").is(id)));
+        mongoTemplate.updateMulti(query,update,PostMessage.class);
+    }
+
+    /**
+     * 根据用户id删除其收藏记录
+     * @param aid
+     * @param uid
+     */
+    public void deleteFavoriteByUid(String aid, String uid){
+        Query query = new Query(Criteria.where("pId").is(aid));
+        Update update = new Update();
+        update.pull("favorites",Query.query(Criteria.where("userId").is(uid)));
         mongoTemplate.updateMulti(query,update,PostMessage.class);
     }
 

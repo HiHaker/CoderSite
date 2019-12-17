@@ -43,6 +43,14 @@ public class QuestionService {
     }
 
     /**
+     * 根据用户id删除
+     * @param uid
+     */
+    public void deleteQuestionByUid(String uid){
+        questionRepository.deleteByUserId(uid);
+    }
+
+    /**
      * 更新问题信息
      * @param question
      */
@@ -112,6 +120,18 @@ public class QuestionService {
     }
 
     /**
+     * 根据用户id删除点赞记录
+     * @param qid
+     * @param uid
+     */
+    public void deleteLikeByUid(String qid, String uid){
+        Query query = new Query(Criteria.where("qId").is(qid));
+        Update update = new Update();
+        update.pull("likes",Query.query(Criteria.where("userId").is(uid)));
+        mongoTemplate.updateMulti(query,update,Question.class);
+    }
+
+    /**
      * 根据id删除收藏记录
      * @param qid
      * @param id
@@ -121,6 +141,18 @@ public class QuestionService {
         Update update = new Update();
         update.pull("favorites",Query.query(Criteria.where("_id").is(id)));
         mongoTemplate.updateMulti(query,update,Question.class);
+    }
+
+    /**
+     * 根据用户id删除其收藏记录
+     * @param qid
+     * @param uid
+     */
+    public void deleteFavoriteByUid(String qid, String uid){
+        Query query = new Query(Criteria.where("qId").is(qid));
+        Update update = new Update();
+        update.pull("favorites",Query.query(Criteria.where("userId").is(uid)));
+        mongoTemplate.updateMulti(query,update, Question.class);
     }
 
     /**

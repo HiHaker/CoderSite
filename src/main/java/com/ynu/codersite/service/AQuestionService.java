@@ -95,6 +95,7 @@ public class AQuestionService {
         jsonObject.put("labels",qt.getLabels());
         jsonObject.put("title",qt.getTitle());
         jsonObject.put("content",qt.getContent());
+        jsonObject.put("image",q.getImages().get(0));
 
         List<RelationNode> likes = q.getLikes();
         if (likes == null){
@@ -144,10 +145,34 @@ public class AQuestionService {
      * @param qid
      * @return
      */
-    public JSONObject getQuestionById(String qid){
+    public JSONObject getQuestionById(String uid, String qid){
         QuestionText qt = questionTextService.getById(qid);
         Question q = questionService.getQuestionById(qid);
-        return encapsulateJson(q, qt);
+        JSONObject result = encapsulateJson(q, qt);
+        result.put("isAttent",userService.isFollow(uid, q.getUserId()));
+        result.remove("image");
+        result.put("images",q.getImages());
+        // 回答json
+        List<CommentNode> iAnswers = qt.getAnswers();
+        // 如果为空，放入null
+        if (iAnswers == null){
+            result.put("answers", null);
+            return result;
+        }
+
+        List<JSONObject> answers = new ArrayList<>();
+        for (CommentNode cn:iAnswers){
+            JSONObject answer = new JSONObject();
+            answer.put("aid",cn.getId());
+            answer.put("uid",cn.getUserId());
+            answer.put("avatar",userService.getUserById(cn.getUserId()).getAvatarId());
+            answer.put("nickname",userInfoService.getUserById(cn.getUserId()).getNickname());
+            answer.put("content",cn.getContent());
+            answer.put("time",cn.getTime());
+            answers.add(answer);
+        }
+        result.put("answers", answers);
+        return result;
     }
 
     /**

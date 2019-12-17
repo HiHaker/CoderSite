@@ -104,4 +104,9 @@ public class QuestionTest {
             System.out.println(qt);
         }
     }
+
+    @Test
+    void questionIsExist(){
+        System.out.println(aQuestionService.questionIsExist("002"));
+    }
 }

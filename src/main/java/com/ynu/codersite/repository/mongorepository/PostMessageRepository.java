@@ -12,6 +12,7 @@ import java.util.List;
  * BY Jianlong
  */
 public interface PostMessageRepository extends MongoRepository<PostMessage, String> {
+    void deleteByUserId(String uid);
     Page<PostMessage> findByUserIdOrderByPostTimeDesc(String userId, Pageable of);
     List<PostMessage> findByUserId(String userId);
 }

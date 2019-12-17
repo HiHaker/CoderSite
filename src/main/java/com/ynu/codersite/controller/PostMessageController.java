@@ -208,11 +208,12 @@ public class PostMessageController {
     @ApiOperation(value = "根据id获取文章", notes = "根据id获取文章")
     @RequestMapping(value = "/getArticleById", method = RequestMethod.GET)
     public JSONObject getArticleById(
-            @RequestParam String aid
+            @RequestParam String aid,
+            @RequestParam String uid
     ){
         JSONObject msg = new JSONObject();
         msg.put("code",0);
-        msg.put("article",aPostMessageService.getPostMessageById(aid));
+        msg.put("article",aPostMessageService.getPostMessageById(aid, uid));
         return msg;
     }
 

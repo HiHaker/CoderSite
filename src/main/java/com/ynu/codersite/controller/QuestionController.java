@@ -139,12 +139,12 @@ public class QuestionController {
     ){
         JSONObject msg = new JSONObject();
         if (aQuestionService.questionIsExist(qid)){
-            msg.put("code",-1);
-            msg.put("message","回答失败,没有此问题");
-        } else {
             questionTextService.addAnswer(qid, id, uid, content, time);
             msg.put("code",0);
             msg.put("message","回答成功");
+        } else {
+            msg.put("code",-1);
+            msg.put("message","回答失败,没有此问题");
         }
         return msg;
     }
@@ -218,11 +218,12 @@ public class QuestionController {
     @ApiOperation(value = "根据id获取问题", notes = "根据id获取问题")
     @RequestMapping(value = "/getQuestionById", method = RequestMethod.GET)
     public JSONObject getQuestionById(
-            @RequestParam String qid
+            @RequestParam String qid,
+            @RequestParam String uid
     ){
         JSONObject msg = new JSONObject();
         msg.put("code",0);
-        msg.put("question",aQuestionService.getQuestionById(qid));
+        msg.put("question",aQuestionService.getQuestionById(uid, qid));
         return msg;
     }
 

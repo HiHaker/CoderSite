@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface QuestionRepository extends MongoRepository<Question, String> {
+    void deleteByUserId(String uid);
     Page<Question> findByUserIdOrderByPostTimeDesc(String userId, Pageable of);
     List<Question> findByUserId(String userId);
 }

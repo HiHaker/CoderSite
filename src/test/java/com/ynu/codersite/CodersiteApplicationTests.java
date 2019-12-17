@@ -25,10 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.ScrolledPage;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import org.springframework.data.elasticsearch.core.query.UpdateQuery;
-import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -97,9 +94,17 @@ class CodersiteApplicationTests {
         System.out.println(result);
     }
 
+    void nestDelete(){
+        DeleteQuery deleteQuery = new DeleteQuery();
+        deleteQuery.setIndex("postmessagetext");
+        deleteQuery.setType("postMessageText");
+        deleteQuery.setQuery(QueryBuilders.nestedQuery("comments",QueryBuilders.matchQuery("comments.id","001"), ScoreMode.Min));
+        template.delete(deleteQuery, CommentNode.class);
+//        template.delete(deleteQuery);
+    }
 
     // 嵌套对象删除
-    void nestDelete(){
+    void nestDelete1(){
         System.out.println("hello");
         UpdateQuery query = new UpdateQuery();
         UpdateRequest request = new UpdateRequest();
@@ -115,7 +120,7 @@ class CodersiteApplicationTests {
             System.out.println("query==null");
         query.setIndexName("postmessagetext");
         query.setType("postMessageText");
-        query.setId("001");
+        query.setId("005");
         query.setUpdateRequest(request);
         template.update(query);
     }

@@ -197,10 +197,35 @@ public class APostMessageService {
      * @param aid
      * @return
      */
-    public JSONObject getPostMessageById(String aid){
+    public JSONObject getPostMessageById(String aid, String uid){
         PostMessageText pmt = pmtService.getById(aid);
         PostMessage pm = pmService.getPostMessageById(aid);
-        return encapsulateJson(pm, pmt);
+        JSONObject result = encapsulateJson(pm, pmt);
+        result.put("isAttent",userService.isFollow(uid, pm.getUserId()));
+        result.remove("content");
+        result.put("content",pmt.getContent());
+
+        // 回答json
+        List<CommentNode> iComments = pmt.getComments();
+        // 如果为空，放入null
+        if (iComments == null){
+            result.put("comment", null);
+            return result;
+        }
+
+        List<JSONObject> comments = new ArrayList<>();
+        for (CommentNode cn:iComments){
+            JSONObject comment = new JSONObject();
+            comment.put("cid",cn.getId());
+            comment.put("uid",cn.getUserId());
+            comment.put("avatar",userService.getUserById(cn.getUserId()).getAvatarId());
+            comment.put("nickname",userInfoService.getUserById(cn.getUserId()).getNickname());
+            comment.put("content",cn.getContent());
+            comment.put("time",cn.getTime());
+            comments.add(comment);
+        }
+        result.put("comment", comments);
+        return result;
     }
 
     /**

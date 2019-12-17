@@ -187,4 +187,19 @@ public class PostMessageTest {
        System.out.println(result.getTotalElements());
        System.out.println(result.getContent().get(0));
    }
+
+   @Test
+   void deleteLikeByUid(){
+        postMessageService.deleteLikeByUid("002","001");
+   }
+
+   @Test
+   void deleteByUid(){
+       List<PostMessage> postMessages = postMessageService.getByUserId("001");
+       System.out.println(postMessages.size());
+       for (PostMessage p:postMessages){
+           System.out.println(p.getpId());
+           postMessageTextService.deleteItem(p.getpId());
+       }
+   }
 }
