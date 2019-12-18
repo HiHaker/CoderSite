@@ -156,6 +156,48 @@ public class QuestionService {
     }
 
     /**
+     * 用户是否点赞过此问题
+     * @param uid
+     * @param qid
+     * @return
+     */
+    public boolean isLike(String uid, String qid){
+        List<RelationNode> relationNodes = this.getQuestionById(qid).getLikes();
+
+        if (relationNodes == null){
+            return false;
+        }
+
+        for (RelationNode rn:relationNodes){
+            if (rn.getUserId().equals(uid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 用户是否收藏过此文章
+     * @param uid
+     * @param qid
+     * @return
+     */
+    public boolean isFavorite(String uid, String qid){
+        List<RelationNode> relationNodes = this.getQuestionById(qid).getFavorites();
+
+        if (relationNodes == null){
+            return false;
+        }
+
+        for (RelationNode rn:relationNodes){
+            if (rn.getUserId().equals(uid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 获取全部问题
      * @return
      */

@@ -34,7 +34,7 @@ public class ChatListController {
 
     @ApiOperation(value = "获取某用户的私信列表", notes = "获取某用户的私信列表")
     @ApiImplicitParam(name = "getChatList", value = "获取某用户的私信列表", required = true, dataType = "ChatList")
-    @RequestMapping(value = "/addChat", method = RequestMethod.POST)
+    @RequestMapping(value = "/getChatList", method = RequestMethod.POST)
     public JSONObject getChatList(
             @RequestParam String uid
     ){

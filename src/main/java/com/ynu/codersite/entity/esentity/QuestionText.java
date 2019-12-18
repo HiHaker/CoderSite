@@ -23,7 +23,7 @@ public class QuestionText {
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title;
     // 问题的标签，使用ik分词器
-    @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    @Field(type = FieldType.Text)
     private List<String> labels;
     // 问题的内容，使用ik分词器
     @Field(type = FieldType.Text, analyzer = "ik_max_word")

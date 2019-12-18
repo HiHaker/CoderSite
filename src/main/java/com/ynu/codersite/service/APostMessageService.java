@@ -202,6 +202,8 @@ public class APostMessageService {
         PostMessage pm = pmService.getPostMessageById(aid);
         JSONObject result = encapsulateJson(pm, pmt);
         result.put("isAttent",userService.isFollow(uid, pm.getUserId()));
+        result.put("isLike", pmService.isLike(uid, aid));
+        result.put("isCollect", pmService.isFavorite(uid, aid));
         result.remove("content");
         result.put("content",pmt.getContent());
 

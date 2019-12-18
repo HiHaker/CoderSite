@@ -139,6 +139,48 @@ public class PostMessageService {
     }
 
     /**
+     * 用户是否点赞过此文章
+     * @param uid
+     * @param aid
+     * @return
+     */
+    public boolean isLike(String uid, String aid){
+        List<RelationNode> relationNodes = this.getPostMessageById(aid).getLikes();
+
+        if (relationNodes == null){
+            return false;
+        }
+
+        for (RelationNode rn:relationNodes){
+            if (rn.getUserId().equals(uid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 用户是否收藏过此文章
+     * @param uid
+     * @param aid
+     * @return
+     */
+    public boolean isFavorite(String uid, String aid){
+        List<RelationNode> relationNodes = this.getPostMessageById(aid).getFavorites();
+
+        if (relationNodes == null){
+            return false;
+        }
+
+        for (RelationNode rn:relationNodes){
+            if (rn.getUserId().equals(uid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 更新帖子
      * @param postMessage
      */

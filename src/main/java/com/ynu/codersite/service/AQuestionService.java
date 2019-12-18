@@ -95,8 +95,11 @@ public class AQuestionService {
         jsonObject.put("labels",qt.getLabels());
         jsonObject.put("title",qt.getTitle());
         jsonObject.put("content",qt.getContent());
-        jsonObject.put("image",q.getImages().get(0));
-
+        if (q.getImages().size() == 0){
+            jsonObject.put("image",null);
+        } else {
+            jsonObject.put("image",q.getImages().get(0));
+        }
         List<RelationNode> likes = q.getLikes();
         if (likes == null){
             jsonObject.put("likeCount",0);
@@ -150,6 +153,8 @@ public class AQuestionService {
         Question q = questionService.getQuestionById(qid);
         JSONObject result = encapsulateJson(q, qt);
         result.put("isAttent",userService.isFollow(uid, q.getUserId()));
+        result.put("isLike", questionService.isLike(uid, qid));
+        result.put("isCollect", questionService.isFavorite(uid, qid));
         result.remove("image");
         result.put("images",q.getImages());
         // 回答json

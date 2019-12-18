@@ -202,4 +202,9 @@ public class PostMessageTest {
            postMessageTextService.deleteItem(p.getpId());
        }
    }
+
+   @Test
+   void isLike(){
+       System.out.println(postMessageService.isLike("003", "002"));
+   }
 }
