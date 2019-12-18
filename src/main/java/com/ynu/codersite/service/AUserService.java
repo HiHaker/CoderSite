@@ -101,7 +101,7 @@ public class AUserService {
         // 删除用户的点赞、收藏
         for (PostMessage pm:pmList){
             postMessageService.deleteLikeByUid(pm.getpId(), id);
-            postMessageService.deleteFavoriteById(pm.getpId(), id);
+            postMessageService.deleteFavoriteByUid(pm.getpId(), id);
         }
         // 删除评论
         List<PostMessageText> pmtList = postMessageTextService.getAllPostMessageText();

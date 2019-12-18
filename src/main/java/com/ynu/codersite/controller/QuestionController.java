@@ -228,6 +228,21 @@ public class QuestionController {
     }
 
     /**
+     * 根据问题id获取全部回答
+     * @return
+     */
+    @ApiOperation(value = "根据问题id获取全部回答", notes = "根据问题id获取全部回答")
+    @RequestMapping(value = "/getQAnswersById", method = RequestMethod.GET)
+    public JSONObject getQAnswersById(
+            @RequestParam String qid
+    ){
+        JSONObject msg = new JSONObject();
+        msg.put("code",0);
+        msg.put("result",aQuestionService.getQAnswersById(qid));
+        return msg;
+    }
+
+    /**
      * 获取全部问题
      * @return
      */

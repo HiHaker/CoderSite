@@ -231,6 +231,18 @@ public class APostMessageService {
     }
 
     /**
+     * 根据文章id获取全部评论
+     * @param aid
+     * @return
+     */
+    public JSONObject getPMCommentsById(String aid){
+        JSONObject result = new JSONObject();
+        PostMessageText pmt = pmtService.getById(aid);
+        result.put("comments", pmt.getComments());
+        return result;
+    }
+
+    /**
      * 获取全部帖子
      * @return
      */

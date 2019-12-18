@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ynu.codersite.entity.CommentNode;
 import com.ynu.codersite.entity.QuestionDTO;
 import com.ynu.codersite.entity.RelationNode;
+import com.ynu.codersite.entity.esentity.PostMessageText;
 import com.ynu.codersite.entity.esentity.QuestionText;
 import com.ynu.codersite.entity.mogoentity.Question;
 import com.ynu.codersite.service.esservice.QuestionTextService;
@@ -177,6 +178,18 @@ public class AQuestionService {
             answers.add(answer);
         }
         result.put("answers", answers);
+        return result;
+    }
+
+    /**
+     * 根据问题id获取全部评论
+     * @param qid
+     * @return
+     */
+    public JSONObject getQAnswersById(String qid){
+        JSONObject result = new JSONObject();
+        QuestionText qt = questionTextService.getById(qid);
+        result.put("answers", qt.getAnswers());
         return result;
     }
 

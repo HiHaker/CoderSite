@@ -212,8 +212,34 @@ public class PostMessageController {
             @RequestParam String uid
     ){
         JSONObject msg = new JSONObject();
-        msg.put("code",0);
-        msg.put("article",aPostMessageService.getPostMessageById(aid, uid));
+        if (aPostMessageService.postMessageIsExist(aid)){
+            msg.put("code", 0);
+            msg.put("article",aPostMessageService.getPostMessageById(aid, uid));
+        } else{
+            msg.put("code","-1");
+            msg.put("message","点赞失败, 文章不存在");
+        }
+        return msg;
+    }
+
+    /**
+     * 根据文章id获取全部评论
+     * @param aid
+     * @return
+     */
+    @ApiOperation(value = "根据文章id获取全部评论", notes = "根据文章id获取全部评论")
+    @RequestMapping(value = "/getCommentsById", method = RequestMethod.GET)
+    public JSONObject getPMCommentsById(
+            @RequestParam String aid
+    ){
+        JSONObject msg = new JSONObject();
+        if (aPostMessageService.postMessageIsExist(aid)){
+            msg.put("code", 0);
+            msg.put("result",aPostMessageService.getPMCommentsById(aid));
+        } else{
+            msg.put("code","-1");
+            msg.put("message","获取失败, 文章不存在");
+        }
         return msg;
     }
 
